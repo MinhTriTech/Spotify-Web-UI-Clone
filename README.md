@@ -1,4 +1,4 @@
-# Spotify Clone – Frontend
+# Spotify Web UI (React Practice Project)
 Đây là phần **Frontend** của dự án Spotify Clone, được xây dựng bằng **React** và **Vite**.
 > 💡 Lưu ý: Repository này chỉ chứa phần frontend.
 > 
