@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { AlertCircleIcon } from '../../components/Icons';
+import { useNavigate } from 'react-router-dom';
+import { login } from "../../services/auth.service";
 
 function LoginForm() {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -54,6 +58,22 @@ function LoginForm() {
 
     setLoginErrors(errors);
     if (!isValid) return;
+
+    let datas = {
+      username: username,
+      password: password
+    }
+
+    try {
+      const data = await login(datas);
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      navigate("/home");
+    } catch (error) {
+      setErrorMessage(err.response?.data?.message || "Đăng nhập thất bại");
+    }
   };
 
   return (
@@ -66,7 +86,7 @@ function LoginForm() {
               name="username"
               value={username}
               onChange={handleInputChange}
-              autocomplete="off"
+              autoComplete="off"
               className={loginErrors.username ? "input error" : "input success"}
             />
             {loginErrors.username && 
@@ -84,7 +104,7 @@ function LoginForm() {
               name="password"
               value={password}
               onChange={handleInputChange}
-              autocomplete="off"
+              autoComplete="off"
               className={loginErrors.password ? "input error" : "input success"}
             />
             {loginErrors.password && 
