@@ -51,7 +51,7 @@ function LoginPage() {
           <div className="rightColumn">
             <button
               type="button"
-              className="mockGoogleButton"
+              className="googleButton"
               onClick={handleMockGoogleLogin}
               style={{
                 width: '100%',

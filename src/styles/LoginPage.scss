@@ -174,29 +174,6 @@
   }
 }
 
-.mockGoogleButton {
-  background-color: #fff;
-  color: #000;
-  padding: 12px 20px;
-  border: 1px solid #ccc;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-  width: 100%;
-  max-width: 250px;
-  white-space: nowrap;
-
-  &:hover {
-    background-color: #f5f5f5;
-    border-color: #999;
-  }
-}
-
 .viewWithoutLoginButton {
   background-color: transparent;
   border: 1px solid #535353;
@@ -220,6 +197,10 @@
 
 /* Responsive cho màn hình nhỏ */
 @media (max-width: 480px) {
+  .contentWrapper {
+    gap: 12px;
+  }
+
   .modalContent {
     max-width: 90%;
     padding: 16px;
@@ -305,6 +286,10 @@
   .error {
     font-size: 14px;
   }
+
+  .submitButton {
+    border-radius: 4px;
+  } 
 }
 
 // Mới 
