@@ -16,8 +16,12 @@ export const HorizontalCard = memo(({ item, setColor }) => {
   const isCurrent = currentSrc.includes(item.file_path);
 
   useEffect(() => {
-    if (item) {
-      getImageAnalysis2(item.image).then();
+    if (item && item.image) {
+      getImageAnalysis2(item.image).then((result) => {
+        // Handle successful image analysis
+      }).catch((error) => {
+        console.warn('Image analysis failed:', error);
+      });
     }
   }, [item]);
 
@@ -26,14 +30,20 @@ export const HorizontalCard = memo(({ item, setColor }) => {
       <div
         className="horizontal-playlist"
         onMouseEnter={ () => {
-                getImageAnalysis2(item.image).then((r) => {
-                  let color = tinycolor(r);
-                  while (color.isLight()) {
-                    color = color.darken(10);
-                  }
-                  setColor(color.toHexString());
-                });
+          if (item && item.image) {
+            getImageAnalysis2(item.image).then((r) => {
+              let color = tinycolor(r);
+              while (color.isLight()) {
+                color = color.darken(10);
               }
+              setColor(color.toHexString());
+            }).catch((error) => {
+              console.warn('Image analysis failed on hover:', error);
+              // Set a default color if image analysis fails
+              setColor('#1db954'); // Spotify green as fallback
+            });
+          }
+        }
         }
       >
         <div style={{ display: 'flex' }}>
@@ -42,6 +52,13 @@ export const HorizontalCard = memo(({ item, setColor }) => {
               <img
                 src={item.image}
                 alt={item.title}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  console.warn('Failed to load image:', item.image);
+                }}
+                onLoad={() => {
+                  // Image loaded successfully
+                }}
               />
             </div>
           </div>

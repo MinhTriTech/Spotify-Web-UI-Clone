@@ -86,7 +86,7 @@ export function GridItemList(props) {
             }
             else {
               return (
-                <div key={String(item.playlist_id)} style={{ position: 'relative' }}>
+                <div key={String(item.playlist_id || item.id || Math.random())} style={{ position: 'relative' }}>
                   <GridItemComponent
                     item={item}
                     onClick={onItemClick ? () => onItemClick(item) : undefined}

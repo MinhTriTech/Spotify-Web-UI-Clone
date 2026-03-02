@@ -55,7 +55,7 @@ const ChatBox = ({ conversationId, recipientId, initialMessages = [] }) => {
       
       sendToSocket({
         message: text,
-        sender_id: idUser.user_info.id,
+        sender_id: idUser.id,
         room_id: conversationId,
       });
 

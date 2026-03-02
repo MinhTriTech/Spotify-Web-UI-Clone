@@ -100,7 +100,7 @@ export const getLibraryItems = createSelector(
 export const getUserPlaylists = createSelector(
   [(state) => state.yourLibrary.myPlaylists],
   (playlists) => {
-    return playlists;
+    return playlists || [];
   }
 );
 

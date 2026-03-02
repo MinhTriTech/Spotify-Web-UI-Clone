@@ -41,7 +41,7 @@ export const LikedSongsList = memo(({ color }) => {
         {!!total ? (
           <div style={{ paddingBottom: 30 }}>
             {tracks.map((song, index) => (
-              <SongView song={song} key={`${song.song_id}`} index={index} />
+              <SongView song={song} key={`${song.id || song.song_id || index}`} index={index} />
             ))}
           </div>
         ) : null}

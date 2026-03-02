@@ -173,22 +173,34 @@ const RootComponent = () => {
 
 function App() {
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-  return (
+  
+  // For offline demo, wrap with GoogleOAuthProvider only if clientId exists
+  const AppContent = () => (
     <ConfigProvider theme={{ token: { fontFamily: 'SpotifyMixUI' } }}>
       <AntdApp>
-        <GoogleOAuthProvider clientId={clientId}>
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <AudioProvider>
-                <GlobalMedia />
-                <RootComponent />
-              </AudioProvider>
-            </PersistGate>
-          </Provider>
-        </GoogleOAuthProvider>; 
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <AudioProvider>
+              <GlobalMedia />
+              <RootComponent />
+            </AudioProvider>
+          </PersistGate>
+        </Provider>
       </AntdApp> 
     </ConfigProvider>
   );
+
+  // Only use Google OAuth if client ID is available (for real backend integration)
+  if (clientId && clientId !== 'undefined' && clientId.trim() !== '') {
+    return (
+      <GoogleOAuthProvider clientId={clientId}>
+        <AppContent />
+      </GoogleOAuthProvider>
+    );
+  }
+
+  // Offline demo mode - no Google OAuth
+  return <AppContent />;
 }
 
 export default App;

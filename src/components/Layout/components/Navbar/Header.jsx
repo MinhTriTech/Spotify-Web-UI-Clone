@@ -70,14 +70,14 @@ const Header = ({ opacity }) => {
 
           {user ? (
             <div className="avatar-container">
-              <Link to={`/users/${user.user_info.id}`}>
+              <Link to={`/users/${user.id}`}>
                 <img
                   className="avatar"
                   id="user-avatar"
                   alt="Ảnh đại diện người dùng"
                   style={{ marginTop: -1 }}
                   src={
-                    ARTISTS_DEFAULT_IMAGE
+                    user.profile_image || ARTISTS_DEFAULT_IMAGE
                   }
                 />
               </Link>

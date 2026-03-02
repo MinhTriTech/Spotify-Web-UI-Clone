@@ -27,7 +27,7 @@ export const ArtistTopTracks = memo(() => {
         <Col span={24}>
           <div>
             {items.map((song, index) => (
-              <TopSong key={song.song_id} song={song} index={index} />
+              <TopSong key={song.id || song.song_id || index} song={song} index={index} />
             ))}
           </div>
         </Col>

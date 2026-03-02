@@ -16,8 +16,8 @@ export const TopTracks = (props) => {
       style={{ margin: '20px 0px', marginTop: '20px' }}
       justify="space-between"
     >
-      {topTracks.slice(0, isMobile ? 4 : undefined).map((item) => (
-        <Col key={item.song_id} xs={24} md={12} lg={6}>
+      {topTracks.slice(0, isMobile ? 4 : undefined).map((item, index) => (
+        <Col key={item.id || item.song_id || index} xs={24} md={12} lg={6}>
           <HorizontalCard item={item} setColor={props.setColor} />
         </Col>
       ))}

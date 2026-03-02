@@ -28,7 +28,7 @@ const TrackActionsWrapper = memo((props) => {
   const dispatch = useAppDispatch();
   const myPlaylists = useAppSelector(getUserPlaylists);
   
-  const userId = useAppSelector((state) => state.auth.user?.user_info.id);
+  const userId = useAppSelector((state) => state.auth.user?.id);
   const [playlistOptions, setPlaylistOptions] = useState([]);
   const [isTrackInLikeSongs, setIsTrackInLikeSongs] = useState(false);
   

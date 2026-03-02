@@ -88,14 +88,44 @@ function rgbToHex(r, g, b) {
 }
 
 export const getImageAnalysis = async (src) => {
-  const img = await loadImage(src);
-  const response = getAverageRGB(img);
-  return rgbToHex(response.r, response.g, response.b);
+  try {
+    if (!src) {
+      throw new Error('No image source provided');
+    }
+    
+    const img = await loadImage(src);
+    const response = getAverageRGB(img);
+    
+    if (!response) {
+      throw new Error('Failed to get average RGB');
+    }
+    
+    return rgbToHex(response.r, response.g, response.b);
+  } catch (error) {
+    console.warn('Image analysis failed:', error);
+    // Return a default color on error
+    return '#1db954'; // Spotify green as fallback
+  }
 };
 
 export const getImageAnalysis2 = async (src) => {
-  const img = await loadImage(src);
-  var colorThief = new ColorThief();
-  // @ts-ignore
-  return rgbToHex(...colorThief.getColor(img));
+  try {
+    if (!src) {
+      throw new Error('No image source provided');
+    }
+    
+    const img = await loadImage(src);
+    const colorThief = new ColorThief();
+    const dominantColor = colorThief.getColor(img);
+    
+    if (!dominantColor || dominantColor.length < 3) {
+      throw new Error('Failed to extract color from image');
+    }
+    
+    return rgbToHex(dominantColor[0], dominantColor[1], dominantColor[2]);
+  } catch (error) {
+    console.warn('Image analysis failed:', error);
+    // Return a default color on error
+    return '#1db954'; // Spotify green as fallback
+  }
 };

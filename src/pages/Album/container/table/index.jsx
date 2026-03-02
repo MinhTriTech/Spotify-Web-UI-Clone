@@ -41,7 +41,7 @@ export const AlbumList = memo(({ color }) => {
               </div>
             ) : null}
             {disk.map((song, index) => (
-              <SongView song={song} key={song.song_id} index={index} />
+              <SongView song={song} key={song.id || song.song_id || index} index={index} />
             ))}
           </div>
         ))}

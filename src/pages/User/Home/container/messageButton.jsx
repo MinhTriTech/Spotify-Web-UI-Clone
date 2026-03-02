@@ -74,7 +74,7 @@ const MessageUser = ({ id }) => {
 export const MessageUserButton = ({ id }) => {
   const userCurrent = useAppSelector((state) => state.auth.user);
   
-  return userCurrent.user_info.id !== id ? (
+  return userCurrent.id !== id ? (
     <MessageUser id={id} />
   ) : null;
 };
