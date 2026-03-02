@@ -1,5 +1,5 @@
 import { Slider } from '@mui/material';
-import { useAudio } from '../../contexts/AudioContext';
+// import { useAudio } from '../../contexts/AudioContext';
 
 const ModernSlider = ({
   isEnabled = true,

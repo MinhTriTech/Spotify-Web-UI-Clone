@@ -4,7 +4,7 @@ import { uiActions } from '../../../../store/slices/ui';
 import { Link } from 'react-router-dom';
 import TrackActionsWrapper from '../../../Actions/TrackActions';
 import ArtistActionsWrapper from '../../../Actions/ArtistActions';
-import { useAudio } from '../../../../contexts/AudioContext';
+// import { useAudio } from '../../../../contexts/AudioContext';
 
 const ArrowDown = (
   <svg

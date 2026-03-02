@@ -95,6 +95,12 @@ function RegisterForm() {
 
     setRegisterErrors(errors);
     if (!isValid) return;
+
+    let rs = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password })
+    });
   };
 
   return (
@@ -107,7 +113,7 @@ function RegisterForm() {
             name="username"
             value={username}
             onChange={handleInputChange}
-            autocomplete="off"
+            autoComplete="off"
             className={registerErrors.username ? "input error" : "input success"}
             />
             {
@@ -126,7 +132,7 @@ function RegisterForm() {
             name="email"
             value={email}
             onChange={handleInputChange}
-            autocomplete="off"
+            autoComplete="off"
             className={registerErrors.email ? "input error" : "input success"}
             />
             {
@@ -145,7 +151,7 @@ function RegisterForm() {
             name="password"
             value={password}
             onChange={handleInputChange}
-            autocomplete="off"
+            autoComplete="off"
             className={registerErrors.password ? "input error" : "input success"}
             />
             {
@@ -164,7 +170,7 @@ function RegisterForm() {
             name="confirmPassword"
             value={confirmPassword}
             onChange={handleInputChange}
-            autocomplete="off"
+            autoComplete="off"
             className={registerErrors.confirmPassword ? "input error" : "input success"}
             />
             {

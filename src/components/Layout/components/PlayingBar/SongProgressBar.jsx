@@ -1,7 +1,7 @@
 import { memo, useEffect, useState, useCallback, useRef } from 'react';
 import ModernSlider from '../../../Slider';
 import { msToTime } from '../../../../utils';
-import { useAudio } from '../../../../contexts/AudioContext';
+// import { useAudio } from '../../../../contexts/AudioContext';
 
 const SongProgressBar = memo(() => {
   const { audioRef, videoRef  } = useAudio();

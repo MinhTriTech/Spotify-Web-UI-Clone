@@ -12,7 +12,7 @@ import { ARTISTS_DEFAULT_IMAGE, PLAYLIST_DEFAULT_IMAGE } from '../../../../../co
 
 import { memo } from 'react';
 
-import { useAudio } from '../../../../../contexts/AudioContext'
+// import { useAudio } from '../../../../../contexts/AudioContext'
 
 import { getSongsOfLikedSong, getSongsOfPlaylist } from '../../../../../store/slices/playlist';
 

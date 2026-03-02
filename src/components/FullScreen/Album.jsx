@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { useAudio } from '../../contexts/AudioContext';
+// import { useAudio } from '../../contexts/AudioContext';
 import ArtistActionsWrapper from '../Actions/ArtistActions';
 import { Link } from 'react-router-dom';
 

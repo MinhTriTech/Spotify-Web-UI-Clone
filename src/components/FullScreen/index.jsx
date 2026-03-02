@@ -5,7 +5,7 @@ import VolumeControls from '../Layout/components/PlayingBar/Volume';
 import ControlButtons from '../Layout/components/PlayingBar/ControlButtons';
 import SongProgressBar from '../Layout/components/PlayingBar/SongProgressBar';
 import { Tooltip } from '../Tooltip';
-import { useAudio } from '../../contexts/AudioContext';
+// import { useAudio } from '../../contexts/AudioContext';
 import { useEffect, useRef, memo, useCallback } from 'react';
 
 const ExpandOutButton = ({ onExit }) => (
