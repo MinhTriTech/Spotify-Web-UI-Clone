@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { messageService } from '../../services/message';
+import { mockChatRooms } from '../mockData';
 
 const initialState = {
   messList: [],
@@ -11,8 +11,10 @@ const initialState = {
 export const fetchChatRooms = createAsyncThunk(
   'message/fetchChatRooms',
   async () => {
-    const response = await messageService.fetchChatRooms();
-    return response;
+    // Using mock data instead of API call
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(mockChatRooms), 100);
+    });
   }
 );
 

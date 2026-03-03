@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 
-import { libraryService } from '../../services/library';
+import { getMockLibrary } from '../mockData';
 
 import { LIKED_SONGS_IMAGE } from '../../constants/spotify';
 
@@ -14,18 +14,24 @@ const initialState = {
 };
 
 export const fetchMyLikeSongs = createAsyncThunk('yourLibrary/fetchMyLikeSongs', async () => {
-  const response = await libraryService.getMyLikeSongs();
-  return response.data;
+  // Using mock data instead of API call
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(getMockLibrary().myLikeSongs), 100);
+  });
 });
 
 export const fetchMyPlaylists = createAsyncThunk('yourLibrary/fetchMyPlaylists', async () => {
-  const response = await libraryService.getMyPlaylists();
-  return response.data;
+  // Using mock data instead of API call
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(getMockLibrary().myPlaylists), 100);
+  });
 });
 
 export const fetchMyArtists = createAsyncThunk('yourLibrary/fetchMyArtists', async () => {
-  const response = await libraryService.getFollowedArtists();
-  return response.data;
+  // Using mock data instead of API call
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(getMockLibrary().myArtists), 100);
+  });
 });
 
 const yourLibrarySlice = createSlice({

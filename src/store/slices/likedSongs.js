@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { userService } from '../../services/users';
+import { getMockLikedSongs } from '../mockData';
 
 const initialState = {
   items: [],
@@ -9,8 +9,10 @@ const initialState = {
 export const fetchLikeSongs = createAsyncThunk(
   'likedSongs/fetchLikeSongs',
   async () => {
-    const response = await userService.getSavedTracks();
-    return response.data;
+    // Using mock data instead of API call
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(getMockLikedSongs()), 100);
+    });
   }
 );
 

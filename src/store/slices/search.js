@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { searchService } from '../../services/search';
+import { getMockSearchResults } from '../mockData';
 
 const initialState = {
   songs: [],
@@ -14,8 +14,10 @@ const initialState = {
 };
 
 const fetchSearch = createAsyncThunk('search/fetchSearch', async (query) => {
-  const response = await searchService.fetchSearch(query);
-  return response;
+  // Using mock data instead of API call
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(getMockSearchResults(query)), 200);
+  });
 });
 
 const searchSlice = createSlice({

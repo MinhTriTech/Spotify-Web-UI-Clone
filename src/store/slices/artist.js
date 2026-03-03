@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { artistService } from '../../services/artist';
+import { getMockArtist } from '../mockData';
 
 const initialState = {
   artist: null,
@@ -12,16 +12,20 @@ const initialState = {
 export const fetchArtist = createAsyncThunk(
   'artist/fetchArtist',
   async (id) => {
-    const data = await artistService.fetchArtist(id);
-    return data;
+    // Using mock data instead of API call
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(getMockArtist(id)), 100);
+    });
   }
 );
 
 export const getInfoArtist = createAsyncThunk(
   'artist/getInfoArtist',
   async (id) => {
-    const data = await artistService.fetchArtist(id);
-    return data;
+    // Using mock data instead of API call
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(getMockArtist(id)), 100);
+    });
   }
 );
 

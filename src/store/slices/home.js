@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { playlistService } from '../../services/playlists';
+import { mockSongs, mockPlaylists, mockArtists } from '../mockData';
 
 const initialState = {
   topTracks: [],
@@ -10,18 +10,24 @@ const initialState = {
 };
 
 export const fetchTopTracks = createAsyncThunk('home/fetchTopTracks', async () => {
-  const response = await playlistService.fetchTopTracks();
-  return response.data;
+  // Using mock data instead of API call
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(mockSongs), 100);
+  });
 });
 
 export const fecthFeaturedPlaylists = createAsyncThunk('home/fecthFeaturedPlaylists', async () => {
-  const response = await playlistService.fecthPlaylists();
-  return response.data;
+  // Using mock data instead of API call
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(mockPlaylists), 100);
+  });
 });
 
 export const fecthArtists = createAsyncThunk('home/fecthArtists', async () => {
-  const response = await playlistService.fecthArtists();
-  return response.data;
+  // Using mock data instead of API call
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(mockArtists), 100);
+  });
 });
 
 const homeSlice = createSlice({

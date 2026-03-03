@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { playlistService } from '../../services/playlists';
+import { getMockPlaylist, getMockLikedSongs } from '../mockData';
 
 const initialState = {
   tracks: [],
@@ -14,30 +14,38 @@ const initialState = {
 export const fetchPlaylist = createAsyncThunk(
   'playlist/fetchPlaylist',
   async (id) => {
-    const response = await playlistService.getPlaylist(id);
-    return response.data;
+    // Using mock data instead of API call
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(getMockPlaylist(id)), 100);
+    });
   }
 );
 
 export const refreshPlaylist = createAsyncThunk(
   'playlist/refreshPlaylist',
   async (id) => {
-    const response = await playlistService.getPlaylist(id);
-    return response.data;
+    // Using mock data instead of API call
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(getMockPlaylist(id)), 100);
+    });
   }
 );
 
 export const getSongsOfPlaylist = createAsyncThunk(
   'playlist/getSongsOfPlaylist',
   async (id) => {
-    const response = await playlistService.getSongsOfPlaylist(id);
-    return response.data;
+    // Using mock data instead of API call
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(getMockPlaylist(id).songs), 100);
+    });
   }
 );
 
 export const getSongsOfLikedSong = createAsyncThunk('playlist/getSongsOfLikedSong', async () => {
-  const response = await playlistService.getSongsOfLikedSong();
-  return response.data;
+  // Using mock data instead of API call
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(getMockLikedSongs().map(item => item.track)), 100);
+  });
 });
 
 const playlistSlice = createSlice({

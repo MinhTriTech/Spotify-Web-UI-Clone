@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { userService } from '../../services/users';
+import { getMockUser } from '../mockData';
 
 const initialState = {
   user: null,
@@ -10,8 +10,10 @@ const initialState = {
 const fetchUser = createAsyncThunk(
   'profile/fetchUser',
   async (id) => {
-    const response = await userService.getUser(id);
-    return response.data;
+    // Using mock data instead of API call
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(getMockUser(id)), 100);
+    });
   }
 );
 
