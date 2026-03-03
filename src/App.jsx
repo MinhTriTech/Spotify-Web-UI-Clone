@@ -6,6 +6,8 @@ import MainLayout from './layout/MainLayout';
 
 const LoginPage = lazy(() => import('./pages/Login'));
 const HomePage = lazy(() => import('./pages/Home'));
+const PlaylistDetail = lazy(() => import('./pages/Playlist'));
+
 const Page404 = lazy(() => import('./pages/404'));
 
 function App() {
@@ -22,7 +24,8 @@ function App() {
                 </MainLayout>
               </ProtectedRoute>
             }
-         />
+          />
+          <Route path="/playlist/:id" element={<PlaylistDetail />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </Suspense>

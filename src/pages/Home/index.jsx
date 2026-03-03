@@ -25,46 +25,43 @@
 
 
 import { useEffect, useState } from "react";
-import { getMe } from "../../services/auth.service";
-import { useNavigate } from "react-router-dom";
+import { getPlaylists, createPlaylist } from "../../services/playlist.service";
+import PlaylistCard from "../../components/playlist/PlaylistCard";
 
 const HomePage = () => {
-  const [ userInfo, setUserInfo ] = useState(null);
-  const navigate = useNavigate();
+  const [playlists, setPlaylists] = useState([]); 
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const data = await getMe(); 
-        setUserInfo(data);
-      } catch (error) {
-        console.log("Token lỗi hoặc hết hạn");
-        localStorage.removeItem("token");
-        navigate("/");
-      }
+    fetchPlaylists();
+  }, []);
+
+  const fetchPlaylists = async () => {
+    try {
+      const data = await getPlaylists();
+      setPlaylists(data);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    fetchUser();
-  }, [navigate]);
+  const handleCreate = async () => {
+    await createPlaylist({
+      title: "My Playlist",
+      description: "First playlist",
+    });
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/");
+    fetchPlaylists();
   };
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h1>Home Page</h1>
+    <div>
+      <h1>Your Playlists</h1>
 
-      {userInfo && (
-        <div>
-          <p>User ID: {userInfo.userId}</p>
-          <p>{userInfo.message}</p>
-        </div>
-      )}
+      <button onClick={handleCreate}>Create Playlist</button>
 
-      <button onClick={handleLogout}>Logout</button>
+      {playlists.map((playlist) => (
+        <PlaylistCard key={playlist._id} playlist={playlist} />
+      ))}
     </div>
   );
 };
