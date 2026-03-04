@@ -1,23 +1,19 @@
-import { usePlayer } from "../../context/PlayerContext";
+import ExtraControlButtons from "./ExtraControlButtons";
+import PlayControls from "./PlayControls";
+import SongDetails from "./SongDetails";
 
 const PlayerBar = () => {
-    const { currentTrack, isPlaying, pauseTrack } = usePlayer();
-
-    if (!currentTrack) return null;
-
-    return (
-        <div style={{ background: "#000", color: "white", padding: "20px" }}>
-            <p>
-                {currentTrack.title} - {currentTrack.artist}
-            </p>
-
-            {isPlaying ? (
-                <button onClick={pauseTrack}>Pause</button>
-            ) : (
-                <p>Paused</p>
-            )}
+  return (
+    <>
+      <div>
+        <div className="w-full bg-black p-4 flex items-center justify-between h-full mobile-hidden">
+          <SongDetails />
+          <PlayControls />
+          <ExtraControlButtons />
         </div>
-    );
+      </div>
+    </>
+  );
 };
 
 export default PlayerBar;

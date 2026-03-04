@@ -13,9 +13,7 @@ const MainLayout = ({ children }) => {
                 </div>
             </div>
 
-            <div style={{ height: "90px", background: "#000", color: "white" }}>
-                <PlayerBar />
-            </div>
+            <PlayerBar />
         </div>
     );
 };
