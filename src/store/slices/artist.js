@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { artistService } from '../../services/artist';
+// import { artistService } from '../../services/artist';
 
 const initialState = {
   artist: null,

@@ -23,13 +23,14 @@
 
 // export default Home;
 
-
 import { useEffect, useState } from "react";
 import { getPlaylists, createPlaylist } from "../../services/playlist.service";
-import PlaylistCard from "../../components/playlist/PlaylistCard";
+import { Col, Row } from "antd";
+import GridItemList from "../../components/Lists/GridItemList";
 
 const HomePage = () => {
   const [playlists, setPlaylists] = useState([]); 
+  const [color, setColor] = useState('rgb(66, 32, 35)');
 
   useEffect(() => {
     fetchPlaylists();
@@ -55,13 +56,20 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>Your Playlists</h1>
-
-      <button onClick={handleCreate}>Create Playlist</button>
-
-      {playlists.map((playlist) => (
-        <PlaylistCard key={playlist._id} playlist={playlist} />
-      ))}
+      <div
+        className="Home-seccion"
+        style={{
+          paddingTop: 0,
+          transition: 'background 5s',
+          background: `linear-gradient(180deg, ${color} 2%, rgb(18, 18, 18) 18%)`,
+        }}
+      >
+        <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <GridItemList title="Danh sách 1" items={playlists}/>
+          </Col>
+        </Row>
+      </div>
     </div>
   );
 };
