@@ -1,3 +1,5 @@
+import PlayerBar from "../components/player/PlayerBar";
+
 const MainLayout = ({ children }) => {
     return (
         <div style={{ display: "flex", height: "100vh", flexDirection: "column" }}>
@@ -7,12 +9,12 @@ const MainLayout = ({ children }) => {
                 </div>
 
                 <div style={{ flex: 1, background: "#181818", color: "white", padding: "20px" }}>
-                {children}
+                    {children}
                 </div>
             </div>
 
             <div style={{ height: "90px", background: "#000", color: "white" }}>
-                Player
+                <PlayerBar />
             </div>
         </div>
     );

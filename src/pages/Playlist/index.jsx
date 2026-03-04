@@ -58,6 +58,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getTracks } from "../../services/playlist.service";
+import { usePlayer } from "../../context/PlayerContext";
 
 const PlaylistDetail = () => {
   const { id } = useParams();
@@ -72,12 +73,14 @@ const PlaylistDetail = () => {
     setTracks(data);
   };
 
+  const { playTrack } = usePlayer();
+
   return (
     <div>
       <h2>Playlist Detail</h2>
 
       {tracks.map((track) => (
-        <div key={track._id}>
+        <div key={track._id} onClick={() => playTrack(track)}>
           <p>{track.title} - {track.artist}</p>
         </div>
       ))}
