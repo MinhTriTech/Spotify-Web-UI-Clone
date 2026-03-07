@@ -43,16 +43,15 @@ const PlayButton = memo(() => {
     //     }
     // }, [disabled, isPlaying, play, pause, videoRef]);
 
-    const { currentTrack, isPlaying, pauseTrack } = usePlayer();
+    const { currentTrack, isPlaying, playTrack } = usePlayer();
     const disabled = !currentTrack;
 
     return (
         <button
         className={`player-pause-button ${disabled ? 'disabled' : ''} ${isPlaying ? 'active' : ''}`}
-        onClick={pauseTrack}
-        // disabled={disabled}
+        onClick={() => playTrack(currentTrack)}
         >
-        {!isPlaying ? <Play /> : <Pause />}
+          {!isPlaying ? <Play /> : <Pause />}
         </button>
     );
 });

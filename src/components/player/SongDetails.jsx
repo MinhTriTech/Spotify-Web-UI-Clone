@@ -8,7 +8,7 @@ const SongDetails = () => {
         <div className="flex flex-row items-center playing-container ps-6">
         <div id="song-and-artist-name">
             <p className="text-white font-bold song-title" title={currentTrack?.title}>
-            {currentTrack?.title}
+                {currentTrack?.title}
             </p>
 
             <span

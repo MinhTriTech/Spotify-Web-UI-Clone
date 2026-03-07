@@ -9,12 +9,23 @@ export const PlayerProvider = ({ children }) => {
     const [isPlaying, setIsPlaying] = useState(false);
 
     const playTrack = (track) => {
-        if (currentTrack?._id !== track._id) {
-            audioRef.current.src = track.audioUrl;
-            setCurrentTrack(track);
+        if (!audioRef.current) return;
+        
+        if (currentTrack?._id === track._id) {
+            if (isPlaying) {
+                audioRef.current.pause();
+                setIsPlaying(false);
+            } else {
+                audioRef.current.play();
+                setIsPlaying(true);
+            }
+            return;
         }
 
+        audioRef.current.src = track.audioUrl;
         audioRef.current.play();
+
+        setCurrentTrack(track);
         setIsPlaying(true);
     };
 
