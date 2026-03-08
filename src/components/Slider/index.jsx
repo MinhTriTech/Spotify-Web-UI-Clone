@@ -1,5 +1,4 @@
-import { Slider } from '@mui/material';
-// import { useAudio } from '../../contexts/AudioContext';
+import '../../styles/slider.css';
 
 const ModernSlider = ({
   isEnabled = true,
@@ -12,53 +11,46 @@ const ModernSlider = ({
   controlType = 'default',
   ...otherProps
 }) => {
-  const handleChange = (event, newValue) => {
-    if (typeof newValue === 'number') {
-      if (onChange) onChange(newValue, controlType);
-    }
+  const handleChange = (e) => {
+    const newValue = parseFloat(e.target.value);
+    if (onChange) onChange(newValue, controlType);
   };
 
-  const handleChangeCommitted = (event, newValue) => {
-    if (typeof newValue === 'number') {
-      if (onChangeComplete) onChangeComplete(newValue, controlType);
-    }
+  const handleMouseUp = (e) => {
+    const newValue = parseFloat(e.target.value);
+    if (onChangeComplete) onChangeComplete(newValue, controlType);
   };
 
-  const { currentSrc } = useAudio();
-    const disabled = !currentSrc;
+  const handleTouchEnd = (e) => {
+    const newValue = parseFloat(e.target.value);
+    if (onChangeComplete) onChangeComplete(newValue, controlType);
+  };
+
+//   const { currentSrc } = useAudio();
+  const disabled = false;
+
+  const percentage = ((value - min) / (max - min)) * 100;
 
   return (
-    <div className="modern-slider-container" data-control-type={controlType}>
-      <Slider
-        disabled={disabled}
-        value={value}
-        min={min}
-        max={max}
-        step={step}
-        onChange={handleChange}
-        onChangeCommitted={handleChangeCommitted}
-        {...otherProps}
-        sx={{
-          color: '#1ed760',
-          height: 4,
-          '& .MuiSlider-thumb': {
-            width: 12,
-            height: 12,
-            backgroundColor: '#1ed760',
-            border: '2px solid white',
-            transition: 'transform 0.2s ease-in-out',
-            '&:hover': {
-              transform: 'scale(1.2)',
-            },
-          },
-          '& .MuiSlider-rail': {
-            backgroundColor: '#535353',
-          },
-          '& .MuiSlider-track': {
-            backgroundColor: '#1ed760',
-          },
-        }}
-      />
+    <div className="custom-slider-container" data-control-type={controlType}>
+      <div className="relative w-full">
+        <input
+          type="range"
+          disabled={disabled}
+          value={value}
+          min={min}
+          max={max}
+          step={step}
+          onChange={handleChange}
+          onMouseUp={handleMouseUp}
+          onTouchEnd={handleTouchEnd}
+          className="custom-slider"
+          style={{
+            background: `linear-gradient(to right, #1ed760 0%, #1ed760 ${percentage}%, #535353 ${percentage}%, #535353 100%)`
+          }}
+          {...otherProps}
+        />
+      </div>
     </div>
   );
 };

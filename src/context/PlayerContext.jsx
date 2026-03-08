@@ -12,6 +12,7 @@ export const PlayerProvider = ({ children }) => {
     // State thời lượng
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
+    const [progressSlider, setProgressSlider] = useState(0);
 
     // State danh sách
     const [trackList, setTrackList] = useState([]);
@@ -79,7 +80,11 @@ export const PlayerProvider = ({ children }) => {
         const audio = audioRef.current;
 
         const updateTime = () => {
-            setCurrentTime(audio.currentTime);
+            const currentTimeVal = audio.currentTime;
+            setCurrentTime(currentTimeVal);
+
+            const progressSliderVal = currentTimeVal / audio.duration;
+            setProgressSlider(progressSliderVal);
         }
 
         const setMeta = () => {
@@ -109,6 +114,7 @@ export const PlayerProvider = ({ children }) => {
                 isPlaying,
                 currentTime,
                 duration,
+                progressSlider,
                 playTrack,
                 pauseTrack,
                 nextTrack,

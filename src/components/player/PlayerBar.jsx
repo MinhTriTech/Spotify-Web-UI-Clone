@@ -6,7 +6,7 @@ const PlayerBar = () => {
   return (
     <>
       <div>
-        <div className="w-full bg-black p-4 flex items-center justify-between h-full mobile-hidden">
+        <div className="w-full bg-black p-6 flex items-center justify-between h-full mobile-hidden">
           <SongDetails />
           <PlayControls />
           <ExtraControlButtons />
