@@ -80,7 +80,7 @@ const PlaylistDetail = () => {
       <h2>Playlist Detail</h2>
 
       {tracks.map((track) => (
-        <div key={track._id} onClick={() => playTrack(track)}>
+        <div key={track._id} onClick={() => playTrack(track, tracks)}>
           <p>{track.title} - {track.artist}</p>
         </div>
       ))}

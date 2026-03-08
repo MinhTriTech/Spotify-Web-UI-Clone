@@ -1,11 +1,12 @@
 import { Col, Row } from "antd";
+import VolumeControls from "./VolumeControls";
 
 const ExtraControlButtons = () => {
   return (
     <div>
       <Row gutter={18} align="middle" className="pe-6">
         <Col>
-          {/* <VolumeControls /> */}
+          <VolumeControls />
         </Col>
       </Row>
     </div>

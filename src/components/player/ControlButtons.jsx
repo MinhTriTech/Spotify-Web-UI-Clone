@@ -1,23 +1,16 @@
 import { Col, Row } from 'antd';
 import { Pause, Play, SkipBack, SkipNext } from '../Icons';
 import { memo, useCallback } from 'react';
-// import { useAudio } from '../../../../contexts/AudioContext';
 import { usePlayer } from '../../context/PlayerContext';
 
 const SkipBackButton = memo(() => {
-  const { playPrevTrack, currentSrc } = useAudio();
-  const disabled = !currentSrc;
-
-  const handleSkipBack = useCallback(() => {
-    if (!disabled) {
-      playPrevTrack();
-    }
-  }, [disabled, playPrevTrack]);
+  const { currentTrack, prevTrack } = usePlayer();
+  const disabled = !currentTrack;
 
   return (
     <button
       className={disabled ? 'disabled' : ''}
-      onClick={handleSkipBack}
+      onClick={() => prevTrack()}
       disabled={disabled}
     >
       <SkipBack />
@@ -26,23 +19,6 @@ const SkipBackButton = memo(() => {
 });
 
 const PlayButton = memo(() => {
-    // const { isPlaying, play, pause, currentSrc, videoRef } = useAudio();
-    // const disabled = !currentSrc;
-
-    // const togglePlay = useCallback(() => {
-    //     if (disabled) return;
-
-    //     const video = videoRef?.current;
-
-    //     if (isPlaying) {
-    //     pause();
-    //     video?.pause(); 
-    //     } else {
-    //     play();
-    //     video?.play().catch(() => {}); 
-    //     }
-    // }, [disabled, isPlaying, play, pause, videoRef]);
-
     const { currentTrack, isPlaying, playTrack } = usePlayer();
     const disabled = !currentTrack;
 
@@ -57,19 +33,13 @@ const PlayButton = memo(() => {
 });
 
 const SkipNextButton = memo(() => {
-  const { playNextTrack, currentSrc } = useAudio();
-  const disabled = !currentSrc;
-
-  const handleSkipNext = useCallback(() => {
-    if (!disabled) {
-      playNextTrack();
-    }
-  }, [disabled, playNextTrack]);
+  const { currentTrack, nextTrack } = usePlayer();
+  const disabled = !currentTrack;
 
   return (
     <button
       className={disabled ? 'disabled' : ''}
-      onClick={handleSkipNext}
+      onClick={() => nextTrack()}
       disabled={disabled}
     >
       <SkipNext />
@@ -78,8 +48,7 @@ const SkipNextButton = memo(() => {
 });
 
 
-// const CONTROLS = [SkipBackButton, PlayButton, SkipNextButton];
-const CONTROLS = [PlayButton];
+const CONTROLS = [SkipBackButton, PlayButton, SkipNextButton];
 
 const ControlButtons = () => {
   return (
