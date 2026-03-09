@@ -1,6 +1,6 @@
 import { Col, Row } from 'antd';
-import { Pause, Play, SkipBack, SkipNext } from '../Icons';
-import { memo, useCallback } from 'react';
+import { Pause, Play, Replay, ReplayOne, ShuffleIcon, SkipBack, SkipNext } from '../Icons';
+import { memo } from 'react';
 import { usePlayer } from '../../context/PlayerContext';
 
 const SkipBackButton = memo(() => {
@@ -51,28 +51,28 @@ const SuffleButton = memo(() => {
   const { isShuffle, setIsShuffle } = usePlayer();
 
   return (
-    <button
-      style={{ color: isShuffle ? "green" : "white" }}
-      onClick={() => setIsShuffle(prev => !prev)}>
-        🔀
+    <button onClick={() => setIsShuffle(prev => !prev)}>
+      <ShuffleIcon active={isShuffle} />
     </button>
   );
 });
 
 const RepeatButton = memo(() => {
   const { repeatMode, toggleRepeat } = usePlayer();
+  const looping = repeatMode === "all" || repeatMode === "one";
 
   return (
-    <button onClick={toggleRepeat}>
-      {repeatMode === "off" && "🔁"}
-      {repeatMode === "all" && "🔁"}
-      {repeatMode === "one" && "🔂"}
+    <button
+      className={repeatMode === "one" ? 'active-icon-button' : ''}
+      onClick={() => toggleRepeat()}
+    >
+      {repeatMode === "one" ? <ReplayOne active /> : <Replay active={looping} />}
     </button>
   );
 });
 
 
-const CONTROLS = [SkipBackButton, PlayButton, SkipNextButton, SuffleButton, RepeatButton];
+const CONTROLS = [SuffleButton, SkipBackButton, PlayButton, SkipNextButton, RepeatButton];
 
 const ControlButtons = () => {
   return (
