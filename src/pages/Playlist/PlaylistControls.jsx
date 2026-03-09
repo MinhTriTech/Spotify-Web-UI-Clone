@@ -1,6 +1,6 @@
 import { Col, Row, Space } from 'antd';
 
-import { PlayCircleButton } from './playCircle';
+import { PlayCircleButton } from './PlayCircle';
 
 const PlaylistControls = () => {
   return (

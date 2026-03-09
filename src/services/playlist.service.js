@@ -1,12 +1,17 @@
 import axiosInstance from "./axiosInstance";
 
 export const getPlaylists = async () => {
-    const res = await axiosInstance.get("/playlists");
+    const res = await axiosInstance.get("/playlist");
+    return res.data;
+};
+
+export const getPlaylistById = async (playlistId) => {
+    const res = await axiosInstance.get(`/playlist/${playlistId}`);
     return res.data;
 };
 
 export const createPlaylist = async (data) => {
-    const res = await axiosInstance.post("/playlists", data);
+    const res = await axiosInstance.post("/playlist", data);
     return res.data;
 };
 

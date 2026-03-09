@@ -97,8 +97,6 @@ const Card = memo((props) => {
 
 const PlaylistCard = memo(({ playlist }) => {
   const navigate = useNavigate();
-  console.log(playlist);
-  
 
   const onClick = () => {
     navigate(`/playlist/${playlist._id}`);
