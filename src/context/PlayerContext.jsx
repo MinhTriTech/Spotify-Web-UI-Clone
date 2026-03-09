@@ -18,6 +18,10 @@ export const PlayerProvider = ({ children }) => {
     const [trackList, setTrackList] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(null);
 
+    // Suffle và Repeat
+    const [isShuffle, setIsShuffle] = useState(false);
+    const [repeatMode, setRepeatMode] = useState("off");
+
     const playTrack = (track, list = []) => {
         if (list.length) {
             setTrackList(list);
@@ -53,16 +57,29 @@ export const PlayerProvider = ({ children }) => {
     const nextTrack = () => {
         if (!trackList.length) return;
 
-        const nextIndex = currentIndex + 1;
+        let nextIndex;
 
-        if (nextIndex >= trackList.length) return;
+        if(isShuffle) {
+            nextIndex = Math.floor(Math.random() * trackList.length);
+        } else {
+            nextIndex = currentIndex + 1;
+    
+            if (nextIndex >= trackList.length) {
+                if (repeatMode === "all") {
+                    nextIndex = 0;
+                } else {
+                    return;
+                }
+            };
+
+        }
 
         const next = trackList[nextIndex];
 
         setCurrentIndex(nextIndex);
 
         playTrack(next);
-    }
+    };
 
     const prevTrack = () => {
         if (currentIndex <= 0) return;
@@ -74,7 +91,15 @@ export const PlayerProvider = ({ children }) => {
         setCurrentIndex(prevIndex)
 
         playTrack(prev);
-    }
+    };
+
+    const toggleRepeat = () => {
+        setRepeatMode(prev => {
+            if (prev === "off") return "all";
+            if (prev === "all") return "one";
+            return "off";
+        });
+    };
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -92,6 +117,12 @@ export const PlayerProvider = ({ children }) => {
         }
 
         const handleEnded = () => {
+            if (repeatMode === "one") {
+                audioRef.current.currentTime = 0;
+                audioRef.current.play();
+                return;
+            }
+
             nextTrack();
         }
 
@@ -115,6 +146,10 @@ export const PlayerProvider = ({ children }) => {
                 currentTime,
                 duration,
                 progressSlider,
+                repeatMode,
+                isShuffle,
+                setIsShuffle,
+                toggleRepeat,
                 playTrack,
                 pauseTrack,
                 nextTrack,

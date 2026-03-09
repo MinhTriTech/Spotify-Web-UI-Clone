@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AlertCircleIcon } from '../../components/Icons';
-import { isValidEmail } from '../../utils';
+import { isValidEmail } from '../../utils/common';
 
 function RegisterForm() {
   const [username, setUsername] = useState('');

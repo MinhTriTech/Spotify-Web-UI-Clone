@@ -47,8 +47,32 @@ const SkipNextButton = memo(() => {
   );
 });
 
+const SuffleButton = memo(() => {
+  const { isShuffle, setIsShuffle } = usePlayer();
 
-const CONTROLS = [SkipBackButton, PlayButton, SkipNextButton];
+  return (
+    <button
+      style={{ color: isShuffle ? "green" : "white" }}
+      onClick={() => setIsShuffle(prev => !prev)}>
+        🔀
+    </button>
+  );
+});
+
+const RepeatButton = memo(() => {
+  const { repeatMode, toggleRepeat } = usePlayer();
+
+  return (
+    <button onClick={toggleRepeat}>
+      {repeatMode === "off" && "🔁"}
+      {repeatMode === "all" && "🔁"}
+      {repeatMode === "one" && "🔂"}
+    </button>
+  );
+});
+
+
+const CONTROLS = [SkipBackButton, PlayButton, SkipNextButton, SuffleButton, RepeatButton];
 
 const ControlButtons = () => {
   return (

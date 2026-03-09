@@ -11,6 +11,9 @@ const ModernSlider = ({
   controlType = 'default',
   ...otherProps
 }) => {
+  // Đảm bảo value luôn là số hợp lệ
+  const safeValue = isNaN(value) || value === null || value === undefined ? 0 : Number(value);
+  
   const handleChange = (e) => {
     const newValue = parseFloat(e.target.value);
     if (onChange) onChange(newValue, controlType);
@@ -29,15 +32,15 @@ const ModernSlider = ({
 //   const { currentSrc } = useAudio();
   const disabled = false;
 
-  const percentage = ((value - min) / (max - min)) * 100;
+  const percentage = ((safeValue - min) / (max - min)) * 100;
 
   return (
     <div className="custom-slider-container" data-control-type={controlType}>
-      <div className="relative w-full">
+      <div className="relative w-full flex">
         <input
           type="range"
           disabled={disabled}
-          value={value}
+          value={safeValue}
           min={min}
           max={max}
           step={step}
