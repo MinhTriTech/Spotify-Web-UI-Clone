@@ -1,19 +1,56 @@
+import { Outlet } from "react-router-dom";
 import PlayerBar from "../components/player/PlayerBar";
+import { Col, Row } from "antd";
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import Library from "../components/Library";
 
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
     return (
-        <div style={{ display: "flex", height: "100vh", flexDirection: "column" }}>
-            <div style={{ display: "flex", flex: 1 }}>
-                <div style={{ width: "250px", background: "#111", color: "white" }}>
-                Sidebar
-                </div>
+        <div>
+            <div className='main-container'>
+                <Row
+                wrap
+                justify='end'
+                gutter={[8, 8]}
+                style={{
+                    overflow: 'hidden',
+                    height: `calc(100vh - 115px)`,
+                }}
+                >
+                    <Col
+                        span={24}
+                        style={{
+                        maxHeight: undefined,
+                        }}
+                    >
+                        <PanelGroup direction='horizontal' autoSaveId='persistence'>
+                            <Panel
+                                id='left'
+                                order={1}
+                                className='mobile-hidden'
+                                minSize={22}
+                                maxSize={28}
+                                defaultSize={22}
+                                style={{
+                                borderRadius: 5,
+                                minWidth: 280,
+                                maxWidth: undefined,
+                                }}
+                            >
+                                <Library />
+                            </Panel>
 
-                <div style={{ flex: 1, background: "#181818", color: "white", padding: "20px" }}>
-                    {children}
-                </div>
+                            <PanelResizeHandle className='resize-handler' />
+                            
+                            <Panel id='center' order={2} style={{ borderRadius: 5 }}>
+                                <Outlet />
+                            </Panel>
+                        </PanelGroup>
+                    </Col>
+                </Row>
             </div>
 
-            <PlayerBar />
+            <footer><PlayerBar /></footer>
         </div>
     );
 };

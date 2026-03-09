@@ -15,18 +15,29 @@ function App() {
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/home" 
-            element={
-              <ProtectedRoute>
-                <MainLayout>
-                  <HomePage />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/playlist/:id" element={<PlaylistDetail />} />
-          <Route path="*" element={<Page404 />} />
+          <Route element={<MainLayout />}>
+            <Route 
+              path="/login" 
+              element={<LoginPage />} 
+            />
+
+            <Route 
+              path="/home" 
+              element={
+                <ProtectedRoute>
+                    <HomePage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route 
+              path="/playlist/:id" 
+              element={<PlaylistDetail />} 
+            />
+
+            <Route path="*" element={<Page404 />} />
+
+          </Route>
         </Routes>
       </Suspense>
     </Router>
