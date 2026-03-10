@@ -49,7 +49,7 @@ const PlaylistDetail = ({ container }) => {
   return (
     <div className="playlist-section">
       <PlaylistHeader color={color} playlist={playlist} tracks={tracks} container={container} sectionContainer={containerRef}/>
-      <PlaylistList color={color} tracks={tracks}/>
+      <PlaylistList color={color} playlist={playlist} tracks={tracks}/>
     </div>
   );
 };

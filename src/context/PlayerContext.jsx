@@ -14,7 +14,8 @@ export const PlayerProvider = ({ children }) => {
     const [duration, setDuration] = useState(0);
     const [progressSlider, setProgressSlider] = useState(0);
 
-    // State danh sách
+    // State playlist
+    const [currentPlaylist, setCurrentPlaylist] = useState(null);
     const [trackList, setTrackList] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(null);
 
@@ -22,11 +23,12 @@ export const PlayerProvider = ({ children }) => {
     const [isShuffle, setIsShuffle] = useState(false);
     const [repeatMode, setRepeatMode] = useState("off");
 
-    const playTrack = (track, list = []) => {
+    const playTrack = (track, list = [], playlistId) => {
         if (list.length) {
             setTrackList(list);
             const index = list.findIndex(t => t._id === track._id);
             setCurrentIndex(index);
+            setCurrentPlaylist(playlistId);
         }
 
         if (!audioRef.current) return;
@@ -47,6 +49,9 @@ export const PlayerProvider = ({ children }) => {
 
         setCurrentTrack(track);
         setIsPlaying(true);
+
+        console.log(currentPlaylist);
+        
     };
 
     const pauseTrack = () => {
@@ -142,6 +147,7 @@ export const PlayerProvider = ({ children }) => {
             value={{
                 audioRef,
                 currentTrack,
+                currentPlaylist,
                 isPlaying,
                 currentTime,
                 duration,

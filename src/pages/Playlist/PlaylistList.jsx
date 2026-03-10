@@ -7,10 +7,8 @@ import PlaylistControls from "./PlaylistControls";
 import { PlaylistTableHeader } from "./PlaylistTableHeader";
 import SongView from "./Song";
 
-const PlaylistList = (({ color, tracks }) => {
+const PlaylistList = (({ color, playlist, tracks }) => {
     const hasTracks = !!tracks?.length;
-    console.log(tracks);
-    
 
     return (
         <div
@@ -20,7 +18,7 @@ const PlaylistList = (({ color, tracks }) => {
             background: `linear-gradient(${color} -50%, ${DEFAULT_PAGE_COLOR} 90%)`,
         }}
         >
-        <PlaylistControls />
+        <PlaylistControls playlist={playlist} tracks={tracks}/>
         {hasTracks ? (
             <div className='playlist-table'>
             <PlaylistTableHeader />

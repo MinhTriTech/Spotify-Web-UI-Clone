@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const PlaylistHeader = ({ container, sectionContainer, color, playlist, tracks }) => {
     const [headerWidth, setHeaderWidth] = useState(0);
     const [activeHeader, setActiveHeader] = useState(false);
-
+    
     useEffect(() => {
         const ref = container.current;
 
@@ -34,9 +34,6 @@ const PlaylistHeader = ({ container, sectionContainer, color, playlist, tracks }
         }
     }, [sectionContainer]);
 
-    console.log(playlist);
-    
-
     return (
         <div
         style={{
@@ -61,10 +58,6 @@ const PlaylistHeader = ({ container, sectionContainer, color, playlist, tracks }
                     opacity: 1,
                 }}
                 >
-                <Space>
-                    {/* <PlayCircleButton size={20} /> */}
-                    <h1 className='nav-header-playlist-title'>{playlist?.title}</h1>
-                </Space>
                 <div
                     style={{ padding: '0px 20px' }}
                     className={'nav-bar-header-table-container active'}

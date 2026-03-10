@@ -1,213 +1,54 @@
 import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import { uiActions } from '../../store/slices/ui';
-import { useAudio } from '../../contexts/AudioContext';
-import { getSongsOfPlaylist } from '../../store/slices/playlist';
-import { getSongsOfAlbum } from '../../store/slices/album'; 
-import { fetchArtist } from '../../store/slices/artist';
-import { fetchLikeSongs } from '../../store/slices/likedSongs';
+import { usePlayer } from '../../context/PlayerContext';
 
-export const PlayCircle = ({ size = 20, big, isCurrent, context }) => {
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => !!state.auth.user);
+export const PlayCircle = ({ size = 20, big, isCurrent, context, tracksPlaylist, playlist }) => {
 
   const { 
-    isPlaying, 
-    play, 
-    pause, 
-    setSrc, 
-    setPlaylistAndPlay, 
-    currentTrack,
-    currentPlaylistId,
-    currentArtistId,
-    updateCurrentPlaylistId,
-    updateCurrentArtistId,
-    currentLikedSongId,
-    updateCurrentLikedSongId,
-    currentAlbumId,
-    updateCurrentAlbumId,
-  } = useAudio();
-
+      isPlaying, currentPlaylist, playTrack, pauseTrack
+    } = usePlayer();
+  
   const isThisTrackPlaying = useCallback(() => {
     if (!isPlaying || !context) return false;
   
     if (context.type === "playlist") {
-      return context.id === currentPlaylistId;
-    }
-
-    if (context.type === "artist") {
-      return context.id === currentArtistId;
-    }
-
-    if (context.type === "likedSongs") {
-      return context.id === currentLikedSongId;
-    }
-
-    if (context.type === "album") {
-      return context.id === currentAlbumId;
-    }
-  
-    if (context.file_path && currentTrack?.id) {
-      return context.song_id === currentTrack.id;
+      return context.id === currentPlaylist;
     }
   
     return false;
-  }, [isPlaying, context, currentTrack, currentPlaylistId, currentArtistId, currentLikedSongId, currentAlbumId]);
+  }, [isPlaying, context, currentPlaylist]);
 
-  const isPlaylist = context && 'id' in context && 'type' in context && context.type === 'playlist';
-
-  const isArtist = context && 'id' in context && 'type' in context && context.type === 'artist';
-
-  const isLikedSong = context && 'id' in context && 'type' in context && context.type === 'likedSongs';
-
-  const isAlbum = context && 'id' in context && 'type' in context && context.type === 'album';
+  const isPlaylist = true;
 
   const onClick = useCallback(
-    async (e) => {
-      if (e?.stopPropagation) e.stopPropagation();
+      async (e) => {
+        if (e?.stopPropagation) e.stopPropagation();
 
-      if (!user) {
-        return dispatch(uiActions.openLoginModal(context?.image));
-      }
-
-      const isSingle = context?.file_path;
-
-      if (isSingle) {
-        updateCurrentPlaylistId(null);
-        updateCurrentArtistId(null);
-        updateCurrentLikedSongId(null);
-        updateCurrentAlbumId(null);
-        if (!isCurrent) {
-          setSrc(context.file_path, {
-            id: context.song_id,
-            title: context.title,
-            artists: context.artists,
-            image: context.image,
-            video: context.video_url,
-          });
-          play();
-        } else {
-          isThisTrackPlaying() ? pause() : play();
+        if (isPlaylist && isCurrent) {
+          isThisTrackPlaying() ? pauseTrack() : playTrack();
+          return;
         }
-        return;
-      }
-
-      if (isPlaylist && isCurrent) {
-        isThisTrackPlaying() ? pause() : play();
-        return;
-      }
-
-      if (isArtist && isCurrent) {
-        isThisTrackPlaying() ? pause() : play();
-        return;
-      }
-
-      if (isLikedSong && isCurrent) {
-        isThisTrackPlaying() ? pause() : play();
-        return;
-      }
-
-      if (isAlbum && isCurrent) {
-        isThisTrackPlaying() ? pause() : play();
-        return;
-      }
-
-      if (isPlaylist && context?.id) {
-        try {
-          const tracks = await dispatch(getSongsOfPlaylist(context.id)).unwrap();
-
+  
+        if (isPlaylist && context?.id) {
+          const tracks = tracksPlaylist;
+  
           if (tracks && tracks.length > 0) {
-            const formattedTracks = tracks.map(track => ({
-              id: track.song_id,
-              title: track.title,
-              artists: track.artists,
-              image: track.image,
-              src: track.file_path,
-              video: track.video_url,
-            }));
-
-            await setPlaylistAndPlay(formattedTracks, 0, context.id);
+            playTrack(tracks[0], tracks, playlist._id);
           }
-        } catch (error) {
-          console.error('Error playing playlist:', error);
         }
-      } else if (isArtist && context?.id) {
-        try {
-          const tracks = await dispatch(fetchArtist(context.id)).unwrap();
-
-          if (tracks.songs && tracks.songs.length > 0) {
-            const formattedTracks = tracks.songs.map(track => ({
-              id: track.song_id,
-              title: track.title,
-              artists: track.artists,
-              image: track.image,
-              src: track.file_path,
-              video: track.video_url,
-            }));
-
-            await setPlaylistAndPlay(formattedTracks, 0, null, context.id);
-          }
-        } catch (error) {
-          console.error('Error playing playlist:', error);
-        }
-      } else if (isLikedSong && context?.id) {
-        try {
-          const tracks = await dispatch(fetchLikeSongs()).unwrap();
-          
-          if (tracks && tracks.length > 0) {
-            const formattedTracks = tracks.map(track => ({
-              id: track.song_id,
-              title: track.title,
-              artists: track.artists,
-              image: track.image,
-              src: track.file_path,
-              video: track.video_url,
-            }));
-
-            await setPlaylistAndPlay(formattedTracks, 0, null, null, context.id);
-          }
-        } catch (error) {
-          console.error('Error playing playlist:', error);
-        }
-      } else if (isAlbum && context?.id) {
-        try {
-          const tracks = await dispatch(getSongsOfAlbum(context.id)).unwrap();
-          
-          if (tracks && tracks.length > 0) {
-            const formattedTracks = tracks.map(track => ({
-              id: track.song_id,
-              title: track.title,
-              artists: track.artists,
-              image: track.image,
-              src: track.file_path,
-              video: track.video_url,
-            }));
-
-            await setPlaylistAndPlay(formattedTracks, 0, null, null, null, context.id);
-          }
-        } catch (error) {
-          console.error('Error playing playlist:', error);
-        }
-      }
-    },
-    [
-      user,
-      dispatch,
-      context,
-      isPlaylist,
-      isCurrent,
-      isThisTrackPlaying,
-      setSrc,
-      play,
-      pause,
-    ]   
-  );
+      },
+      [
+        context,
+        isPlaylist,
+        isCurrent,
+        isThisTrackPlaying,
+      ]   
+    );
 
   return (
     <button
       onClick={onClick}
       className={`${big ? 'circle-play big' : 'circle-play'} 
-                 ${isThisTrackPlaying() ? 'active' : ''}`}
+      ${isThisTrackPlaying() ? 'active' : ''}`}
     >
       <span>
         {!isThisTrackPlaying() ? (

@@ -1,12 +1,17 @@
 import { memo } from 'react';
+import { PlayCircle } from '../../components/Lists/PlayCircle';
+import { PLAYLIST_DEFAULT_IMAGE } from '../../constants/spotify';
+import { usePlayer } from '../../context/PlayerContext';
 
-export const PlayCircleButton = memo(({ size = 30 }) => {
-  const playlist = [];
-  const track = [];
-
+export const PlayCircleButton = memo(({ size = 30, playlistPlayCircle, tracksPlayCircle }) => {
+  const playlist = playlistPlayCircle;
+  const tracks = tracksPlayCircle;
+  
+  const { currentPlaylistId, currentIndex } = usePlayer();
+  
   const context={ 
-    id: playlist.playlist_id,
-    image: playlist.image,
+    id: playlist._id,
+    image: playlist.image || PLAYLIST_DEFAULT_IMAGE,
     type: "playlist",
     title: playlist.title
   }
@@ -20,20 +25,17 @@ export const PlayCircleButton = memo(({ size = 30 }) => {
     
     isCurrent = isPlayingThisPlaylist;
   } 
-  else if (context && context.song_id) {
-    isCurrent = currentTrack?.id === context.song_id;
-  }
   
-
-  if ( !track ) return null; 
+  if ( !tracks ) return null; 
 
   return (
-    // <PlayCircle
-    //   size={size}
-    //   big={size >= 30}
-    //   isCurrent={isCurrent}
-    //   context={context}
-    // />
-    <div>Playcircle</div>
+    <PlayCircle
+      size={size}
+      big={size >= 30}
+      isCurrent={isCurrent}
+      context={context}
+      tracksPlaylist={tracks}
+      playlist={playlist}
+    />
   );
 });
