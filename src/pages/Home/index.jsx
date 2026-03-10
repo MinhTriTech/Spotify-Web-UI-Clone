@@ -1,40 +1,29 @@
-// import { memo, useEffect } from 'react';
-
-// import HomePageContainer from './container';
-
-// import { homeActions } from '../../store/slices/home';
-// import { useAppDispatch, useAppSelector } from '../../store/store';
-
-// const Home = memo((props) => {
-//   const { container } = props;
-
-//   const dispatch = useAppDispatch();
-//   const user = useAppSelector((state) => !!state.auth.user);
-//   useEffect(() => {
-//     if (user) {
-//       dispatch(homeActions.fetchTopTracks());
-//     }
-//     dispatch(homeActions.fecthFeaturedPlaylists());
-//     dispatch(homeActions.fecthArtists());
-//   }, [user, dispatch]);
-
-//   return <HomePageContainer container={container} />;
-// });
-
-// export default Home;
-
 import { useEffect, useState } from "react";
 import { getPlaylists, createPlaylist } from "../../services/playlist.service";
 import { Col, Row } from "antd";
 import GridItemList from "../../components/Lists/GridItemList";
+import { RandomTracks } from "./RandomTracks";
+import { getRandomTrack } from "../../services/track.service";
 
 const HomePage = () => {
   const [playlists, setPlaylists] = useState([]); 
+  const [randomTracks, setRandomTracks] = useState([]); 
+
   const [color, setColor] = useState('rgb(66, 32, 35)');
 
   useEffect(() => {
+    fetchRandomTracks();
     fetchPlaylists();
   }, []);
+
+  const fetchRandomTracks = async () => {
+    try {
+      const data = await getRandomTrack();
+      setRandomTracks(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchPlaylists = async () => {
     try {
@@ -44,6 +33,7 @@ const HomePage = () => {
       console.log(error);
     }
   };
+
 
   const handleCreate = async () => {
     await createPlaylist({
@@ -65,6 +55,10 @@ const HomePage = () => {
         }}
       >
         <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <RandomTracks setColor={setColor} tracks={randomTracks}/>
+          </Col>
+
           <Col span={24}>
             <GridItemList title="Danh sách 1" items={playlists}/>
           </Col>

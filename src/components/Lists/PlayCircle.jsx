@@ -1,57 +1,72 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { usePlayer } from '../../context/PlayerContext';
 
 export const PlayCircle = ({ size = 20, big, isCurrent, context, tracksPlaylist, playlist }) => {
 
-  const { 
-      isPlaying, currentPlaylist, playTrack, pauseTrack
-    } = usePlayer();
-  
-  const isThisTrackPlaying = useCallback(() => {
+  const { isPlaying, currentPlaylist, playTrack, pauseTrack, currentTrack } = usePlayer();
+
+  // Tính toán type từ context thay vì dùng state
+  const isPlaylist = context?.type === "playlist";
+  const isTrack = context?.audioUrl ? true : false;
+    
+  // Sử dụng useMemo để cache kết quả, tránh gọi nhiều lần trong render
+  const isThisPlaying = useMemo(() => {
     if (!isPlaying || !context) return false;
-  
+    
     if (context.type === "playlist") {
       return context.id === currentPlaylist;
+    } else if (context?.audioUrl ? true : false) {
+      return context._id === currentTrack?._id;
     }
-  
+    
     return false;
-  }, [isPlaying, context, currentPlaylist]);
-
-  const isPlaylist = true;
-
+  }, [isPlaying, context, currentPlaylist, currentTrack]);
+    
   const onClick = useCallback(
-      async (e) => {
-        if (e?.stopPropagation) e.stopPropagation();
+    async (e) => {
+      if (e?.stopPropagation) e.stopPropagation();
 
-        if (isPlaylist && isCurrent) {
-          isThisTrackPlaying() ? pauseTrack() : playTrack();
-          return;
+      if (isPlaylist && isCurrent) {
+        isThisPlaying ? pauseTrack() : playTrack();
+        return;
+      }
+
+      if (isTrack && isCurrent) {
+        isThisPlaying ? pauseTrack() : playTrack(context);
+        return;
+      }
+
+      if (isPlaylist && context?.id) {
+        const tracks = tracksPlaylist;
+
+        if (tracks && tracks.length > 0) {
+          playTrack(tracks[0], tracks, playlist._id);
         }
-  
-        if (isPlaylist && context?.id) {
-          const tracks = tracksPlaylist;
-  
-          if (tracks && tracks.length > 0) {
-            playTrack(tracks[0], tracks, playlist._id);
-          }
-        }
-      },
-      [
-        context,
-        isPlaylist,
-        isCurrent,
-        isThisTrackPlaying,
-      ]   
-    );
+      } else if (isTrack) {
+        playTrack(context);
+      }
+    },
+    [
+      context,
+      isPlaylist,
+      isTrack,
+      isCurrent,
+      isThisPlaying,
+      tracksPlaylist,
+      playlist,
+      playTrack,
+      pauseTrack,
+    ]   
+  );
 
   return (
     <button
       onClick={onClick}
       className={`${big ? 'circle-play big' : 'circle-play'} 
-      ${isThisTrackPlaying() ? 'active' : ''}`}
+      ${isThisPlaying ? 'active' : ''}`}
     >
       <span>
-        {!isThisTrackPlaying() ? (
+        {!isThisPlaying ? (
           <svg
           style={{ height: size }}
           data-encore-id='icon'
