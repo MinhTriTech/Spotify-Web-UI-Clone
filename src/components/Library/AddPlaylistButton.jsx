@@ -12,7 +12,7 @@ export const AddPlaylistButton = memo(() => {
   const onClick = async () => {
     try {
       const playlist = await createPlaylist({
-        title: "My Playlist",
+        title: "Danh sách phát của tôi",
         description: "",
       });
 

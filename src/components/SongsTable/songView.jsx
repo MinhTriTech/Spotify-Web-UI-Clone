@@ -29,8 +29,7 @@ const Title = (props) => {
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div className='flex flex-row items-center'>
               <p className={`title text-left ${isCurrent ? 'active' : ''}`}>
-                <span>{song.name}</span>{' '}
-                {song.explicit && !isList ? <span className='explicit'>18+</span> : null}
+                <span>{song.title}</span>{' '}
               </p>
             </div>
 

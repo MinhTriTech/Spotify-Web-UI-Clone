@@ -24,3 +24,10 @@ export const createTrack = async (playlistId, data) => {
     const res = await axiosInstance.post(`/tracks/${playlistId}`, data);
     return res.data;
 }
+
+export const addTrackToPlaylist = async (playlistId, trackId) => {
+    const res = await axiosInstance.post(`/playlist/${playlistId}/tracks`, {
+        "trackId": trackId,
+    });
+    return res.data;
+}

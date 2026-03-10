@@ -1,60 +1,37 @@
-import { memo, useCallback, useState, useEffect } from 'react';
+import { memo, useState, useEffect } from 'react';
 import { Dropdown } from 'antd';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-import {
-  DeleteIcon,
-  AddToPlaylist,
-} from '../Icons';
-
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import { playlistActions } from '../../store/slices/playlist';
-import { yourLibraryActions, getUserPlaylists } from '../../store/slices/yourLibrary';
-import { uiActions } from '../../store/slices/ui';
-
-import { playlistService } from '../../services/playlists';
-import { userService } from '../../services/users';
-import { likedSongsActions } from '../../store/slices/likedSongs';
+import { DeleteIcon, AddToPlaylist} from '../Icons';
+import { addTrackToPlaylist, getPlaylists, createPlaylist, getPlaylistById } from '../../services/playlist.service';
+import { usePlayer } from '../../context/PlayerContext';
 
 const TrackActionsWrapper = memo((props) => {
   const { children, track, canEdit, trigger } = props;
   const location = useLocation();
 
-  const playlistCurrent = useAppSelector((state) => state.playlist?.playlist);
+  const { currentPlaylist } = usePlayer();
   const likedSongs = location.pathname === '/collection/tracks';
   
-  const navigate = useNavigate();
 
-  const dispatch = useAppDispatch();
-  const myPlaylists = useAppSelector(getUserPlaylists);
-  
-  const userId = useAppSelector((state) => state.auth.user?.id);
+
   const [playlistOptions, setPlaylistOptions] = useState([]);
   const [isTrackInLikeSongs, setIsTrackInLikeSongs] = useState(false);
-  
-  const handleUserValidation = useCallback((button = false) => {
-    if (!userId) {
-      dispatch(button ? uiActions.openLoginButton() : uiActions.openLoginTooltip());
-      return false;
-    }
-    return true;
-  }, [dispatch, userId]);
 
   useEffect(() => {
     const loadFilteredPlaylists = async () => {
-      if (!track?.song_id || !myPlaylists) return;
+      if (!track?._id) return;
 
-      const likeSongsResponse = await userService.getSavedTracks();
-      const isTrackInLikeSongs = likeSongsResponse.data.some(song => song.song_id === track.song_id);
-
-      setIsTrackInLikeSongs(isTrackInLikeSongs);
+      const myPlaylists = await getPlaylists();
+      
+      if (!myPlaylists || myPlaylists.length === 0) return;
 
       const filtered = await Promise.all(
         myPlaylists
-          .filter(p => p.playlist_id !== playlistCurrent?.playlist_id)
+          .filter(p => p._id !== currentPlaylist)
           .map(async (p) => {
-            const response = await playlistService.getPlaylist(p.playlist_id);
-            const containsTrack = response.data.songs.some(song => song.song_id === track.song_id);
+            const response = await getPlaylistById(p._id);
+            const containsTrack = response.tracks.some(song => song._id === track._id);
             
             return !containsTrack ? p : null;
           })
@@ -63,36 +40,18 @@ const TrackActionsWrapper = memo((props) => {
       const validPlaylists = filtered.filter(Boolean);
 
       const options = validPlaylists.map((p) => ({
-        key: p.playlist_id,
+        key: p._id,
         label: p.title,
         onClick: async () => {
-          if (!handleUserValidation()) return;
-          await playlistService.addPlaylistItems(p.playlist_id, track.song_id);
-          dispatch(playlistActions.fetchPlaylist(p.playlist_id));
-          navigate(`/playlist/${p.playlist_id}`);
+          await addTrackToPlaylist(p._id, track._id);
         },
       }));
 
-      let finalOptions = options;
-
-      if (!isTrackInLikeSongs) {
-        const customOption = {
-          key: "likedSongs",
-          label: "Danh sách yêu thích",
-          onClick: async () => {
-            if (!handleUserValidation()) return;
-            await userService.saveTracks(track.song_id);
-            dispatch(likedSongsActions.fetchLikeSongs());
-            navigate(`/collection/tracks`);
-          },
-        };
-        finalOptions = [customOption, ...options]; 
-      }
-      setPlaylistOptions(finalOptions);
+      setPlaylistOptions(options);
     };
 
     loadFilteredPlaylists();
-  }, [myPlaylists, playlistCurrent, track.song_id, handleUserValidation, dispatch, navigate]);
+  }, [track._id]);
 
   const getItems = () => {
     const items = [
@@ -104,14 +63,19 @@ const TrackActionsWrapper = memo((props) => {
           {
             label: 'Tạo playlist mới',
             key: 'new',
-            onClick: () => {
-              if (!handleUserValidation()) return;
-              playlistService.createPlaylist("Danh sách phát của tôi").then((res) => {
-                const newPlaylist = res;
-                playlistService.addPlaylistItems(newPlaylist.playlist_id, track.song_id).then(() => {
-                  dispatch(yourLibraryActions.fetchMyPlaylists());
+            onClick: async () => {
+              try {
+                const playlist = await createPlaylist({
+                  title: "Danh sách phát của tôi",
+                  description: "",
                 });
-              });
+                
+                window.dispatchEvent(new CustomEvent('playlist-created'));
+                
+                await addTrackToPlaylist(playlist._id, track._id);
+              } catch (error) {
+                console.error('Failed to create playlist:', error);
+              }
             },
           },
           { type: 'divider' },
@@ -130,13 +94,13 @@ const TrackActionsWrapper = memo((props) => {
 
           if (likedSongs) {
             userService.deleteTracks(track.song_id).then(() => {
-              dispatch(likedSongsActions.fetchLikeSongs());
+              // dispatch(likedSongsActions.fetchLikeSongs());
             });
           } else {
-            playlistService.removePlaylistItems(playlistCurrent.playlist_id, track.song_id).then(() => {
-              dispatch(playlistActions.refreshPlaylist(playlistCurrent.playlist_id));
-              dispatch(playlistActions.removeTrack({ id: track.song_id }));
-              dispatch(yourLibraryActions.fetchMyPlaylists());
+            playlistService.removePlaylistItems(currentPlaylist.playlist_id, track.song_id).then(() => {
+              // dispatch(playlistActions.refreshPlaylist(playlistCurrent.playlist_id));
+              // dispatch(playlistActions.removeTrack({ id: track.song_id }));
+              // dispatch(yourLibraryActions.fetchMyPlaylists());
             });
           }
         },

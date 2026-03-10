@@ -17,9 +17,10 @@ const PlaylistDetail = ({ container }) => {
   const [color, setColor] = useState(DEFAULT_PAGE_COLOR);
 
   const getPlaylist = async () => {
-    const { playlist, tracks} = await getPlaylistById(id);
+    const playlist = await getPlaylistById(id);
+    
     setPlaylist(playlist);
-    setTracks(tracks);
+    setTracks(playlist.tracks);
   };
 
   useEffect(() => {

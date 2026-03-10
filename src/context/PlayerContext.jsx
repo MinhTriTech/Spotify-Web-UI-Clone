@@ -49,9 +49,6 @@ export const PlayerProvider = ({ children }) => {
 
         setCurrentTrack(track);
         setIsPlaying(true);
-
-        console.log(currentPlaylist);
-        
     };
 
     const pauseTrack = () => {
