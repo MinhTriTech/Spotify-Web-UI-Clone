@@ -172,13 +172,15 @@ export const SongView = (props) => {
         <div className='song-details flex flex-row items-center w-full'>
           <div className='flex flex-row items-center justify-between w-full'>
             {index !== undefined ? (
-              <Index index={index} onClick={onClick} />
+              <Index index={index} onClick={onClick} isCurrent={isCurrent} isPlaying={isPlaying} />
             ) : null}
             {fields.map((Field, i) => (
               <Field
                 key={i}
                 isList={isList}
                 onPlay={onClick}
+                isCurrent={isCurrent}
+                isPlaying={isPlaying}
                 {...props}
               />
             ))}
