@@ -44,7 +44,7 @@ export const PlayerProvider = ({ children }) => {
             return;
         }
 
-        audioRef.current.src = track.audioUrl;
+        audioRef.current.src = `${import.meta.env.VITE_URL}${track.audioUrl}`;
         audioRef.current.play();
 
         setCurrentTrack(track);

@@ -1,24 +1,26 @@
-import { Dropdown, message } from 'antd';
+import { Dropdown } from 'antd';
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AddIcon, NewPlaylistIcon } from '../Icons';
+import { createPlaylist } from '../../services/playlist.service';
 
 
 export const AddPlaylistButton = memo(() => {
   const navigate = useNavigate();
-  const user = true;
 
   const onClick = async () => {
-    if (!user) return dispatch(uiActions.openLoginTooltip());
-  
     try {
-      const playlist = await playlistService.createPlaylist('Danh sách phát của tôi');
-      message.success('Tạo danh sách phát thành công');
-      dispatch(fetchMyPlaylists());
-      navigate(`/playlist/${playlist.playlist_id}`);
+      const playlist = await createPlaylist({
+        title: "My Playlist",
+        description: "",
+      });
+
+      // Dispatch event để refresh playlist list
+      window.dispatchEvent(new CustomEvent('playlist-created'));
+      
+      navigate(`/playlist/${playlist._id}`);
     } catch (error) {
-      message.error('Không thể tạo danh sách phát. Vui lòng thử lại sau.');
       console.error(error);
     }
   };

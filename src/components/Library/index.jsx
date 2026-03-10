@@ -48,6 +48,17 @@ const LoggedContent = memo(() => {
 
     useEffect(() => {
         fetchPlaylists();
+        
+        // Listen for playlist created event
+        const handlePlaylistCreated = () => {
+            fetchPlaylists();
+        };
+        
+        window.addEventListener('playlist-created', handlePlaylistCreated);
+        
+        return () => {
+            window.removeEventListener('playlist-created', handlePlaylistCreated);
+        };
     }, []);
   
     return (

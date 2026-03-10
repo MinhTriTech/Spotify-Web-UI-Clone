@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPlaylists, createPlaylist } from "../../services/playlist.service";
+import { getPlaylists } from "../../services/playlist.service";
 import { Col, Row } from "antd";
 import GridItemList from "../../components/Lists/GridItemList";
 import { RandomTracks } from "./RandomTracks";
@@ -32,16 +32,6 @@ const HomePage = () => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-
-  const handleCreate = async () => {
-    await createPlaylist({
-      title: "My Playlist",
-      description: "First playlist",
-    });
-
-    fetchPlaylists();
   };
 
   return (
