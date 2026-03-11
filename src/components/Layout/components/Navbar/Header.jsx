@@ -16,7 +16,7 @@ const Header = ({ opacity }) => {
       key: 'profile',
       label: 'Trang cá nhân',
       icon: <ArtistIcon />,
-      onClick: () => navigate('/users/profile'),
+      onClick: () => navigate('/profile'),
     },
     {
       key: 'logout',

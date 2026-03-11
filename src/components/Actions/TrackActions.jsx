@@ -8,15 +8,10 @@ import { usePlayer } from '../../context/PlayerContext';
 
 const TrackActionsWrapper = memo((props) => {
   const { children, track, canEdit, trigger } = props;
-  const location = useLocation();
 
   const { currentPlaylist } = usePlayer();
-  const likedSongs = location.pathname === '/collection/tracks';
-  
-
 
   const [playlistOptions, setPlaylistOptions] = useState([]);
-  const [isTrackInLikeSongs, setIsTrackInLikeSongs] = useState(false);
 
   useEffect(() => {
     const loadFilteredPlaylists = async () => {
@@ -31,6 +26,7 @@ const TrackActionsWrapper = memo((props) => {
           .filter(p => p._id !== currentPlaylist)
           .map(async (p) => {
             const response = await getPlaylistById(p._id);
+            
             const containsTrack = response.tracks.some(song => song._id === track._id);
             
             return !containsTrack ? p : null;
@@ -84,7 +80,7 @@ const TrackActionsWrapper = memo((props) => {
       },
     ];
     
-    if (canEdit || isTrackInLikeSongs) {
+    if (canEdit) {
       items.push({
         label: 'Xóa khỏi playlist này',
         key: 'remove-from-playlist',
@@ -92,17 +88,11 @@ const TrackActionsWrapper = memo((props) => {
         onClick: () => {
           if (!handleUserValidation()) return;
 
-          if (likedSongs) {
-            userService.deleteTracks(track.song_id).then(() => {
-              // dispatch(likedSongsActions.fetchLikeSongs());
-            });
-          } else {
-            playlistService.removePlaylistItems(currentPlaylist.playlist_id, track.song_id).then(() => {
-              // dispatch(playlistActions.refreshPlaylist(playlistCurrent.playlist_id));
-              // dispatch(playlistActions.removeTrack({ id: track.song_id }));
-              // dispatch(yourLibraryActions.fetchMyPlaylists());
-            });
-          }
+          playlistService.removePlaylistItems(currentPlaylist.playlist_id, track.song_id).then(() => {
+            // dispatch(playlistActions.refreshPlaylist(playlistCurrent.playlist_id));
+            // dispatch(playlistActions.removeTrack({ id: track.song_id }));
+            // dispatch(yourLibraryActions.fetchMyPlaylists());
+          });
         },
       });
     }

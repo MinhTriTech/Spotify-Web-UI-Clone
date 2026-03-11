@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import tinycolor from 'tinycolor2';
-import { useAppSelector } from '../../../../store/store';
-import { getLibraryCollapsed, isRightLayoutOpen } from '../../../../store/slices/ui';
 
 export const PageHeader = ({
   color,
@@ -15,9 +13,6 @@ export const PageHeader = ({
 }) => {
   const [headerWidth, setHeaderWidth] = useState(0);
   const [activeHeader, setActiveHeader] = useState(false);
-
-  const rightLayoutOpen = useAppSelector(isRightLayoutOpen);
-  const libraryCollapsed = useAppSelector(getLibraryCollapsed);
 
   useEffect(() => {
     const ref = container.current;
@@ -42,7 +37,7 @@ export const PageHeader = ({
       observer.observe(ref);
       return () => ref && observer.unobserve(ref);
     }
-  }, [sectionContainer, libraryCollapsed, rightLayoutOpen]);
+  }, [sectionContainer]);
 
   return (
     <div

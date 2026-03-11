@@ -1,0 +1,48 @@
+import { memo } from 'react';
+import { ARTISTS_DEFAULT_IMAGE } from '../../constants/spotify';
+
+export const UserHeader = memo((props) => {
+  const { profile } = props;
+  
+  return (
+    <div className='profile-header'>
+      <div
+        className='profile-header-cover'
+        style={{
+          backgroundColor: props.color,
+        }}
+      ></div>
+
+      <div className='profile-header-background'></div>
+      <div className='profile-header-content'>
+        <div></div>
+        <div className='profile-img-container'>
+          <div className='profile-img'>
+            <div
+              style={{
+                borderRadius: 4,
+                height: '100%',
+                width: '100%',
+              }}
+            >
+              <img
+                src={
+                  ARTISTS_DEFAULT_IMAGE
+                }
+                alt="user?.username"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className='profile-header-text'>
+          <span className='type'>Hồ sơ</span>
+
+          <span className='profile-header-name-container'>
+            <h1>{profile.username}</h1>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+});

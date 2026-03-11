@@ -4,6 +4,7 @@ import { Suspense, lazy, useRef, useEffect } from 'react';
 
 import ProtectedRoute from './routes/ProtectedRoute';
 import MainLayout from './layout/MainLayout';
+import Profile from './pages/Profile';
 
 const LoginPage = lazy(() => import('./pages/Login'));
 const HomePage = lazy(() => import('./pages/Home'));
@@ -44,6 +45,16 @@ const AppRoutes = () => {
           <Route 
             path="/playlist/:id" 
             element={<PlaylistDetail container={container}/>} 
+          />
+
+          <Route 
+            path="/profile"
+            element={<Profile container={container}/>}
+          />
+
+          <Route 
+            path="/user/:id"
+            element={<Profile container={container}/>}
           />
 
           <Route path="*" element={<Page404 />} />

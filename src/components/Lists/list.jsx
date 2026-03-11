@@ -1,37 +1,24 @@
 import { Flex } from 'antd';
 import { Link } from 'react-router-dom';
-import { TrackCard, ArtistCard, AlbumCard } from './GridCards';
-import { useAppSelector } from '../../store/store';
+import { TrackCard } from './GridCards';
 
 export function GridItemComponent(props) {
   
   const { item, onClick } = props;
   
-    if (item.playlist_id && !item.album_id) {
-      return <TrackCard item={item} onClick={onClick} />;
-    }
-
-    if (item.artist_id && !item.album_id) {
-      return <ArtistCard item={item} onClick={onClick} />;
-    }
-
-    if (item.album_id && item.artist_id) {
-      return <AlbumCard item={item} onClick={onClick} />;
-    }
-
-    if (item.id && item.username) {
-      return <ArtistCard item={item} onClick={onClick} />;
-    }
+  if (item._id) {
+    return <TrackCard item={item} onClick={onClick} />;
+  }
+  
   return null;
 }
 
 export function GridItemList(props) {
-  const user = useAppSelector((state) => !!state.auth.user);
   const { onItemClick } = props;
-  const { items, chips, title } = props;
+  const { items, title } = props;
   
   return (
-    <div className={`${!user ? 'guest' : ''}`}>
+    <div>
       <Flex justify='space-between' align='center'>
         <div>
           {title ? (
@@ -42,7 +29,6 @@ export function GridItemList(props) {
         </div>
       </Flex>
 
-      {chips}
       <div
         className='playlist-grid'
         style={
@@ -56,44 +42,14 @@ export function GridItemList(props) {
         {(items || [])
           .filter((i) => i)
           .map((item) => {
-            if (item.album_id) {
-              return (
-                <div key={String(item.album_id)} style={{ position: 'relative' }}>
-                  <GridItemComponent
-                    item={item}
-                    onClick={onItemClick ? () => onItemClick(item) : undefined}
-                  />
-                </div>
-              );
-            } else if (item.artist_id) {
-              return (
-                <div key={String(item.artist_id)} style={{ position: 'relative' }}>
-                  <GridItemComponent
-                    item={item}
-                    onClick={onItemClick ? () => onItemClick(item) : undefined}
-                  />
-                </div>
-              );
-            } else if (item.id && item.username) {
-              return (
-                <div key={String(item.id)} style={{ position: 'relative' }}>
-                  <GridItemComponent
-                    item={item}
-                    onClick={onItemClick ? () => onItemClick(item) : undefined}
-                  />
-                </div>
-              );
-            }
-            else {
-              return (
-                <div key={String(item.playlist_id || item.id || Math.random())} style={{ position: 'relative' }}>
-                  <GridItemComponent
-                    item={item}
-                    onClick={onItemClick ? () => onItemClick(item) : undefined}
-                  />
-                </div>
-              );
-            }
+            return (
+              <div key={item._id}>
+                <GridItemComponent
+                  item={item}
+                  onClick={onItemClick ? () => onItemClick(item) : undefined}
+                />
+              </div>
+            );
           })} 
       </div>
     </div>
