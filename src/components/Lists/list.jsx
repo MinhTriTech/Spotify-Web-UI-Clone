@@ -1,14 +1,20 @@
 import { Flex } from 'antd';
 import { Link } from 'react-router-dom';
-import { TrackCard } from './GridCards';
+import { TrackCard, ArtistCard } from './GridCards';
 
 export function GridItemComponent(props) {
   
   const { item, onClick } = props;
   
-  if (item._id) {
+  if (item._id && item.title) {
     return <TrackCard item={item} onClick={onClick} />;
   }
+
+  if (item._id && item.username) {
+    return <ArtistCard item={item} onClick={onClick} />;
+  }
+
+
   
   return null;
 }

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { PLAYLIST_DEFAULT_IMAGE } from '../../constants/spotify';
+import { ARTISTS_DEFAULT_IMAGE, PLAYLIST_DEFAULT_IMAGE } from '../../constants/spotify';
 
 const Card = ({ title, image, rounded, description, onClick }) => {
   return (
@@ -40,6 +40,25 @@ export const TrackCard = ({ item }) => {
       image={item.image ? item.image : PLAYLIST_DEFAULT_IMAGE}
       onClick={() => navigate(`/playlist/${item._id}`)}
     />
+  );
+};
+
+export const ArtistCard = ({ item, onClick }) => {
+
+  const navigate = useNavigate();
+
+  return (
+    <div onClick={onClick}>
+      <Card
+        rounded
+        title={item.username}
+        image={ARTISTS_DEFAULT_IMAGE}
+        context={{ 
+          type: "user",
+        }}
+        onClick={() => navigate(`/user/${item._id}`)}
+      />
+    </div>
   );
 };
 
