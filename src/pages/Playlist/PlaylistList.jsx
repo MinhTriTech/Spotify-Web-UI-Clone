@@ -7,7 +7,7 @@ import PlaylistControls from "./PlaylistControls";
 import { PlaylistTableHeader } from "./PlaylistTableHeader";
 import SongView from "./Song";
 
-const PlaylistList = (({ color, playlist, tracks }) => {
+const PlaylistList = (({ color, playlist, tracks = [] }) => {
     const hasTracks = !!tracks?.length;
 
     return (
