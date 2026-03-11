@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './styles.scss'
 
 export const NoSearchResults = memo(({ searchValue }) => {
   const navigate = useNavigate();
@@ -13,7 +12,7 @@ export const NoSearchResults = memo(({ searchValue }) => {
           Không tìm thấy kết quả nào cho "{searchValue}".
         </p>
 
-        <button onClick={() => navigate('/')}>Trang chủ</button>
+        <button onClick={() => navigate('/home')}>Trang chủ</button>
       </div>
     </div>
   );

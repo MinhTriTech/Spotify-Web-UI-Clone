@@ -10,6 +10,12 @@ const LoginPage = lazy(() => import('./pages/Login'));
 const HomePage = lazy(() => import('./pages/Home'));
 const PlaylistDetail = lazy(() => import('./pages/Playlist'));
 
+const SearchContainer = lazy(() => import('./pages/Search'));
+const SearchPage = lazy(() => import('./pages/Search/Home'));
+const SearchTracks = lazy(() => import('./pages/Search/Songs'));
+const SearchPlaylists = lazy(() => import('./pages/Search/Playlists'));
+const SearchUsers = lazy(() => import('./pages/Search/Users'));
+
 const Page404 = lazy(() => import('./pages/404'));
 
 // Component wrapper để sử dụng useLocation (phải nằm trong Router)
@@ -56,6 +62,13 @@ const AppRoutes = () => {
             path="/user/:id"
             element={<Profile container={container}/>}
           />
+
+          <Route path="/search/:search" element={<SearchContainer container={container} />}>
+            <Route index element={<SearchPage container={container} />} />
+            <Route path="tracks" element={<SearchTracks container={container} />} />
+            <Route path="playlists" element={<SearchPlaylists container={container} />} />
+            <Route path="users" element={<SearchUsers container={container} />} />
+          </Route>
 
           <Route path="*" element={<Page404 />} />
 

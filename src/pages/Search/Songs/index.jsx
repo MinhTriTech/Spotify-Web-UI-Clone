@@ -1,31 +1,54 @@
-import { memo, useEffect } from 'react';
-
-import NoSearchResults from '../NoResults';
-import SearchSongsPageContainer from './container';
-
+import { memo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { searchActions } from '../../../store/slices/search';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import NoSearchResults from '../NoResults';
+import SearchTracksTable from './SearchTracksTable';
+import { Col, Row } from 'antd';
 
 const SearchSongsPage = memo((props) => {
-  const dispatch = useAppDispatch();
   const params = useParams();
 
-  const loading = useAppSelector((state) => state.search.loading);
-  const songs = useAppSelector((state) => state.search.songs);
-
-  useEffect(() => {
-    dispatch(searchActions.setSection('TRACKS'));
-  }, [dispatch]);
-
-  if (loading) return null;
+  const songs = [
+    {
+      _id: '1',
+      title: 'Blinding Lights',
+      artist: 'The Weeknd',
+      album: 'After Hours',
+      duration: 200,
+      url: 'https://example.com/song1.mp3',
+      image: 'https://picsum.photos/200?random=1'
+    },
+    {
+      _id: '2',
+      title: 'Save Your Tears',
+      artist: 'The Weeknd',
+      album: 'After Hours',
+      duration: 215,
+      url: 'https://example.com/song2.mp3',
+      image: 'https://picsum.photos/200?random=2'
+    },
+    {
+      _id: '3',
+      title: 'Levitating',
+      artist: 'Dua Lipa',
+      album: 'Future Nostalgia',
+      duration: 203,
+      url: 'https://example.com/song3.mp3',
+      image: 'https://picsum.photos/200?random=3'
+    }
+  ];
 
   if (songs.length < 1) {
     return <NoSearchResults searchValue={params.search || ''} />;
   }
 
-  return <SearchSongsPageContainer {...props} query={params.search} />;
+  return (
+    <Row gutter={[16, 16]}>
+      <Col span={24}>
+        <SearchTracksTable query={params.search} />;
+      </Col>
+    </Row>
+  );
 });
 
 export default SearchSongsPage;

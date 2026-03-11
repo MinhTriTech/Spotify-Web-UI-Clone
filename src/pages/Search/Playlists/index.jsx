@@ -1,28 +1,45 @@
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 
 import NoSearchResults from '../NoResults';
-import SearchPlaylistPageContainer from './container';
 
 import { useParams } from 'react-router-dom';
-
-import { searchActions } from '../../../store/slices/search';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { Col, Row } from 'antd';
+import PlaylistsSearchSection from './PlaylistsSearchSection';
 
 const SearchPlaylistPage = memo((props) => {
-  const dispatch = useAppDispatch();
   const params = useParams();
 
-  const playlists = useAppSelector((state) => state.search.playlists);
-
-  useEffect(() => {
-    dispatch(searchActions.setSection('PLAYLISTS'));
-  }, [dispatch]);
+  const playlists = [
+    {
+      _id: 'p1',
+      title: 'Chill Vibes',
+      description: 'Relax and unwind',
+      owner: 'User123',
+      image: 'https://picsum.photos/300?random=10',
+      tracksCount: 50
+    },
+    {
+      _id: 'p2',
+      title: 'Workout Mix',
+      description: 'Get pumped!',
+      owner: 'FitUser',
+      image: 'https://picsum.photos/300?random=11',
+      tracksCount: 30
+    }
+  ];
 
   if (playlists.length < 1) {
     return <NoSearchResults searchValue={params.search || ''} />;
   }
 
-  return <SearchPlaylistPageContainer {...props} />;
+  return (
+    <Row gutter={[16, 16]}>
+      <Col span={24}>
+        <PlaylistsSearchSection />
+      </Col>
+    </Row>
+  )
+  ;
 });
 
 export default SearchPlaylistPage;

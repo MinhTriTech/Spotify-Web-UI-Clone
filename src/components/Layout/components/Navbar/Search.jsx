@@ -50,7 +50,7 @@ export const Search = memo(() => {
         onChange={(e) => {
           setInputValue(e.target.value);
         }}
-        placeholder="Tìm kiếm bài hát, nghệ sĩ, playlist..."
+        placeholder="Tìm kiếm bài hát, danh sách phát, người dùng..."
       />
     </Space>
   );

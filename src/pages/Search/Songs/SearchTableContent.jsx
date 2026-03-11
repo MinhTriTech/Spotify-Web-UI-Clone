@@ -1,8 +1,6 @@
-import React from 'react';
+import SongView, { SongViewComponents } from '../../../components/SongsTable/songView';
 
-import SongView, { SongViewComponents } from '../../../../../components/SongsTable/songView';
-
-export const Song = (props) => {
+export const SearchTableContent = (props) => {
   const { song, index } = props;
 
   return (
@@ -11,7 +9,7 @@ export const Song = (props) => {
       index={index}
       song={song}
       fields={[
-        SongViewComponents.TitleWithCover,
+        SongViewComponents.Title,
         SongViewComponents.Artists,
         SongViewComponents.Actions,
       ]}
@@ -19,4 +17,4 @@ export const Song = (props) => {
   );
 };
 
-export default Song;
+export default SearchTableContent;

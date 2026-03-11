@@ -1,16 +1,13 @@
 import { Space } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
-import Chip from '../../../../components/Chip';
-import { PageHeader } from '../../../../components/Layout/components/Header';
-import { useAppSelector } from '../../../../store/store';
+import Chip from '../../components/Chip';
+import { PageHeader } from '../../components/Layout/components/Header';
 
-const SECTIONS = ['ALL', 'ARTISTS', 'TRACKS', 'ALBUMS', 'PLAYLISTS', 'USERS'];
+const SECTIONS = ['ALL', 'TRACKS', 'PLAYLISTS', 'USERS'];
 
 const sectionLabels = {
   ALL: 'TẤT CẢ',
-  ARTISTS: 'NGHỆ SĨ',
   TRACKS: 'BÀI HÁT',
-  ALBUMS: 'ALBUM',
   PLAYLISTS: 'DANH SÁCH PHÁT',
   USERS: 'NGƯỜI DÙNG',
 };
@@ -20,7 +17,7 @@ export const SearchHeader = (props) => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const section = useAppSelector((state) => state.search.section); 
+  const section = 'ALL'; 
 
   return (
     <PageHeader
