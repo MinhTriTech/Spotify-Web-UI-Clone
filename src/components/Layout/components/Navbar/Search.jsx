@@ -1,6 +1,6 @@
 import { Input, Space } from 'antd';
 import NavigationButton from './NavigationButton';
-import { ActiveMessageIcon, ActiveHomeIcon, BrowseIcon, HomeIcon, MessageIcon, SearchIcon } from '../../../Icons';
+import { ActiveHomeIcon, HomeIcon, SearchIcon } from '../../../Icons';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
@@ -32,22 +32,14 @@ export const Search = memo(() => {
     }
   }, [debouncedValue, prevValue, navigate]);
 
-  const isHome = useMemo(() => location.pathname === '/', [location.pathname]);
-
-  const isMessage = useMemo(() => location.pathname.startsWith('/message'), [location.pathname]);
+  const isHome = useMemo(() => location.pathname === '/home', [location.pathname]);
 
   return (
     <Space size={10} align="center">
       <NavigationButton
         text="Trang chủ"
         icon={isHome ? <ActiveHomeIcon /> : <HomeIcon />}
-        onClick={() => navigate('/')}
-      />
-
-      <NavigationButton
-        text="Tin nhắn"
-        icon={isMessage ? <ActiveMessageIcon /> : <MessageIcon />}
-        onClick={() => navigate('/message')} 
+        onClick={() => navigate('/home')}
       />
 
       <Input

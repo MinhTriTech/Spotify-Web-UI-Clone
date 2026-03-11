@@ -1,61 +1,30 @@
-import { useCallback } from 'react';
-import { Popconfirm, Space } from 'antd';
-import { Link } from 'react-router-dom';
-import { CloseIcon, LogoutIcon } from '../../../Icons';
-import WhiteButton from '../../../Button';
-import { useDispatch } from 'react-redux';
-import { handleLogout } from '../../../../store/slices/auth';
-
-import { uiActions } from '../../../../store/slices/ui';
-import { useAppDispatch, useAppSelector } from '../../../../store/store';
+import { Space, Dropdown } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 import { ARTISTS_DEFAULT_IMAGE } from '../../../../constants/spotify';
-
-const LoginButton = () => {
-  const dispatch = useAppDispatch();
-  const tooltipOpen = useAppSelector((state) => state.ui.loginButtonOpen);
-
-  const handleLogin = useCallback(() => {
-    dispatch(uiActions.toggleLoginModalMain());
-  }, [dispatch]);
-
-  const onClose = useCallback(() => {
-    dispatch(uiActions.closeLoginButton());
-  }, [dispatch]);
-
-  return (
-    <Popconfirm
-      icon={null}
-      open={tooltipOpen}
-      onCancel={onClose}
-      placement="bottomLeft"
-      rootClassName="login-tooltip"
-      cancelText={<CloseIcon />}
-      title="Bạn đã đăng xuất"
-      cancelButtonProps={{ type: 'text' }}
-      okButtonProps={{ className: 'white-button small' }}
-      description="Đăng nhập để thêm vào bài hát yêu thích của bạn."
-    >
-      <WhiteButton title="Đăng nhập" onClick={handleLogin} />
-    </Popconfirm>
-  );
-};
+import { ArtistIcon } from '../../../Icons';
 
 const Header = ({ opacity }) => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleLogoutActive = useCallback(async (e) => {
-    try {
-      await dispatch(handleLogout()).unwrap();
-    } catch (error) {
-      console.error('Lỗi khi đăng xuất', error);
-    }
-  }, [dispatch]);
+  const handleLogout = () => {
+    console.log("Đăng xuất")
+  };
 
-  const user = useAppSelector(
-    (state) => state.auth.user,
-    (prev, next) => prev?.id === next?.id
-  );
+  const menuItems = [
+    {
+      key: 'profile',
+      label: 'Trang cá nhân',
+      icon: <ArtistIcon />,
+      onClick: () => navigate('/users/profile'),
+    },
+    {
+      key: 'logout',
+      label: <span style={{ color: '#ef4444' }}>Đăng xuất</span>,
+      icon: "",
+      onClick: handleLogout,
+    },
+  ];
 
   return (
     <div
@@ -64,27 +33,23 @@ const Header = ({ opacity }) => {
     >
       <div className="flex flex-row items-center">
         <Space>
-          {user ? (
-              <LogoutIcon onClick={handleLogoutActive}/>
-          ) : null}
-
-          {user ? (
-            <div className="avatar-container">
-              <Link to={`/users/${user.id}`}>
+          <div className="avatar-container">
+            <Dropdown 
+              menu={{ items: menuItems }} 
+              placement="bottomRight"
+              trigger={['click']}
+            >
+              <div style={{ cursor: 'pointer' }}>
                 <img
                   className="avatar"
                   id="user-avatar"
                   alt="Ảnh đại diện người dùng"
                   style={{ marginTop: -1 }}
-                  src={
-                    user.profile_image || ARTISTS_DEFAULT_IMAGE
-                  }
+                  src={ARTISTS_DEFAULT_IMAGE}
                 />
-              </Link>
-            </div>
-          ) : (
-            <LoginButton />
-          )}
+              </div>
+            </Dropdown>
+          </div>
         </Space>
       </div>
     </div>

@@ -3,6 +3,7 @@ import PlayerBar from "../components/player/PlayerBar";
 import { Col, Row } from "antd";
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import Library from "../components/Library";
+import { Navbar } from "../components/Layout/components/Navbar";
 
 const MainLayout = () => {
     return (
@@ -11,12 +12,16 @@ const MainLayout = () => {
                 <Row
                 wrap
                 justify='end'
-                gutter={[8, 8]}
+                gutter={[6, 6]}
                 style={{
                     overflow: 'hidden',
                     height: `calc(100vh - 115px)`,
                 }}
                 >
+                    <Col span={24}>
+                        <Navbar />
+                    </Col>
+
                     <Col
                         span={24}
                         style={{
