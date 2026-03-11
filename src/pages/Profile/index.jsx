@@ -7,10 +7,11 @@ import UserHoverableMenu from "./scrollHoverable";
 import { UserHeader } from "./UserHeader";
 import { MyPlaylistsSection } from "./MyPlaylistsSection";
 
-import { getMyProfile } from "../../services/user.service";
+import { getMyProfile, getUserProfile } from "../../services/user.service";
 
 const Profile = (props) => {
     const ref = useRef(null);
+
     const [color, setColor] = useState(DEFAULT_PAGE_COLOR);
 
     const { id } = useParams();
@@ -18,19 +19,24 @@ const Profile = (props) => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                setLoading(true);
+    const fetchProfile = async () => {
+        try {
+            setLoading(true);
+            if (id) {
+                const res = await getUserProfile(id);
+                setProfile(res);
+            } else {
                 const res = await getMyProfile();
                 setProfile(res);
-            } catch (error) {
-                console.error("Error fetching profile:", error);
-            } finally {
-                setLoading(false);
             }
+        } catch (error) {
+            console.error("Error fetching profile:", error);
+        } finally {
+            setLoading(false);
         }
+    }
 
+    useEffect(() => {
         fetchProfile();
     }, [id])
 
