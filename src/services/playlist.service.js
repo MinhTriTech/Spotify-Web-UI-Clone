@@ -32,6 +32,11 @@ export const addTrackToPlaylist = async (playlistId, trackId) => {
     return res.data;
 }
 
+export const removeTrackFromPlaylist = async (playlistId, trackId) => {
+    const res = await axiosInstance.delete(`/playlist/${playlistId}/tracks/${trackId}`);
+    return res.data;
+}
+
 export const updatePlaylist = async (playlistId, data) => {
     const res = await axiosInstance.patch(`/playlist/${playlistId}`, data);
     return res.data;

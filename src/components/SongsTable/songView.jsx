@@ -6,6 +6,7 @@ import { MenuIcon, Pause, Play } from '../Icons';
 import { EQUILISER_IMAGE } from '../../constants/spotify';
 
 import { usePlayer } from '../../context/PlayerContext';
+import TrackActionsWrapper from '../Actions/TrackActions';
 
 const getArtists = (artists) => {
   return (
@@ -94,13 +95,13 @@ const Artists = ({ song, isList }) => {
 const Actions = ({ song }) => {
   return (
     <div className='text-right actions tablet-hidden' style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-      {/* <TrackActionsWrapper track={song} trigger={['click']}> */}
+      <TrackActionsWrapper canEdit={true} track={song} trigger={['click']}>
         <Tooltip title={`Tùy chọn khác cho ${song.title}`}>
           <div>
             <MenuIcon />
           </div>
         </Tooltip>
-      {/* </TrackActionsWrapper> */}
+      </TrackActionsWrapper>
     </div>
   );
 };

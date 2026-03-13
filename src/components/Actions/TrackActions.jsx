@@ -1,13 +1,15 @@
 import { memo, useState, useEffect } from 'react';
 import { Dropdown } from 'antd';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { DeleteIcon, AddToPlaylist} from '../Icons';
-import { addTrackToPlaylist, getPlaylists, createPlaylist, getPlaylistById } from '../../services/playlist.service';
+import { addTrackToPlaylist, getPlaylists, createPlaylist, getPlaylistById, removeTrackFromPlaylist } from '../../services/playlist.service';
 import { usePlayer } from '../../context/PlayerContext';
 
 const TrackActionsWrapper = memo((props) => {
   const { children, track, canEdit, trigger } = props;
+
+  const { id } = useParams();
 
   const { currentPlaylist } = usePlayer();
 
@@ -85,14 +87,12 @@ const TrackActionsWrapper = memo((props) => {
         label: 'Xóa khỏi playlist này',
         key: 'remove-from-playlist',
         icon: <DeleteIcon />,
-        onClick: () => {
-          if (!handleUserValidation()) return;
-
-          playlistService.removePlaylistItems(currentPlaylist.playlist_id, track.song_id).then(() => {
-            // dispatch(playlistActions.refreshPlaylist(playlistCurrent.playlist_id));
-            // dispatch(playlistActions.removeTrack({ id: track.song_id }));
-            // dispatch(yourLibraryActions.fetchMyPlaylists());
-          });
+        onClick: async () => {
+          try {
+            await removeTrackFromPlaylist(id, track._id);
+          } catch (error) {
+            console.error('Failed to delete playlist:', error);
+          }
         },
       });
     }

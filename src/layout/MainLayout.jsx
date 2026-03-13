@@ -9,7 +9,7 @@ import EditPlaylistModal from "../components/Modals/EditPlaylistModal";
 const MainLayout = () => {
     return (
         <div>
-            <EditPlaylistModal />
+            {/* <EditPlaylistModal /> */}
 
             <div className='main-container'>
                 <Row
