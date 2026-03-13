@@ -2,10 +2,6 @@ import { memo, useCallback, useMemo } from 'react';
 import { Dropdown } from 'antd';
 import { DeleteIcon, EditIcon } from '../Icons';
 
-import { uiActions } from '../../store/slices/ui';
-// import { useAppDispatch, useAppSelector } from '../../store/store';
-import { editPlaylistModalActions } from '../../store/slices/editPlaylistModal';
-import { deletePlaylistModalActions } from '../../store/slices/deletePlaylistModal';
 
 export const PlayListActionsWrapper = memo((props) => {
   const { children, playlist } = props;
@@ -35,8 +31,7 @@ export const PlayListActionsWrapper = memo((props) => {
           key: 1,
           icon: <EditIcon />,
           onClick: () => {
-            if (!handleUserValidation()) return;
-            dispatch(editPlaylistModalActions.setPlaylist({ playlist }));
+
           },
         },
         {
@@ -44,8 +39,7 @@ export const PlayListActionsWrapper = memo((props) => {
           key: '2',
           icon: <DeleteIcon />,
           onClick: () => {
-            if (!handleUserValidation()) return;
-            dispatch(deletePlaylistModalActions.setPlaylist({ playlist }));
+
           },
         },
         {
