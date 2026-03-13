@@ -73,8 +73,8 @@ const PlaylistHeader = ({ container, sectionContainer, color, playlist, tracks }
                         <div>
                             <img
                                 src={
-                                playlist?.image
-                                    ? playlist.image
+                                playlist?.coverImage
+                                    ? `${import.meta.env.VITE_URL}${playlist.coverImage}` 
                                     : PLAYLIST_DEFAULT_IMAGE
                                 }
                                 alt='Playlist image'
@@ -95,7 +95,7 @@ const PlaylistHeader = ({ container, sectionContainer, color, playlist, tracks }
                             <Col span={24}>
                                 <Space className='owner'>
                                     {playlist?.owner ? (
-                                        <Link to={`/users/${playlist.owner}`}>
+                                        <Link to={`/user/${playlist.owner}`}>
                                             <img
                                                 className='playlist-avatar'
                                                 id='user-avatar'

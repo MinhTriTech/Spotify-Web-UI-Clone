@@ -1,34 +1,23 @@
 import { Col, Modal, Row } from 'antd';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
 
-import { refreshPlaylist } from '../../store/slices/playlist';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import { yourLibraryActions } from '../../store/slices/yourLibrary';
-import { editPlaylistModalActions } from '../../store/slices/editPlaylistModal';
-
-import { playlistService } from '../../services/playlists';
-
 import { PLAYLIST_DEFAULT_IMAGE } from '../../constants/spotify';
+import { getPlaylistById, updatePlaylist } from '../../services/playlist.service';
+import { useParams } from 'react-router-dom';
 
-const toBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-  });
-
-export const EditPlaylistModal = memo(() => {
-  const dispatch = useAppDispatch();
+const EditPlaylistModal = memo(() => {
   const formRef = useRef(null);
-  const currentPlaylist = useAppSelector((state) => state.playlist.playlist);
-  const playlist = useAppSelector((state) => state.editPlaylistModal.playlist);
+  const { id } = useParams();
+
+  const [playlist, setPlaylist] = useState(null);
+
 
   const [file, setFile] = useState(null);
   const [fileUrl, setFileUrl] = useState(null);
   const [loading, setLoading] = useState(false);
-  
+
+
   function handleChange(e) {
     if (!e.target.files.length) {
       setFileUrl('');
@@ -41,16 +30,15 @@ export const EditPlaylistModal = memo(() => {
   }
 
   useEffect(() => {
-    if (playlist) {
-      formRef.current?.setFieldsValue({
-        title: playlist.title,
-      });
-    }
-  }, [playlist]);
+    const getPlaylist = async () => {
+      const playlist = await getPlaylistById(id);
+      
+      setPlaylist(playlist);
+      formRef.current?.setFieldsValue({ title: playlist?.title });
+    };
 
-  const onClose = useCallback(() => {
-    dispatch(editPlaylistModalActions.setPlaylist({ playlist: null }));
-  }, [dispatch]);
+    getPlaylist();
+  }, [id]);
 
   return (
     <Modal
@@ -58,7 +46,6 @@ export const EditPlaylistModal = memo(() => {
       width={550}
       footer={null}
       open={!!playlist}
-      onCancel={onClose}
       title={
         <h1
           style={{
@@ -78,25 +65,14 @@ export const EditPlaylistModal = memo(() => {
         style={{ marginTop: 10 }}
         onFinish={async (values) => {
           try {
-            setLoading(true);
-            await playlistService.changePlaylistDetails(playlist.playlist_id, {
-              ...values,
-              image: file || null,
-            });
+            const formData = new FormData();
 
-            setLoading(false);
+            formData.append("title", values.title);
+            formData.append("coverImage", file);
 
-            if (currentPlaylist && playlist.playlist_id === currentPlaylist.playlist_id) {
-              dispatch(refreshPlaylist(currentPlaylist.playlist_id));
-            }
-
-            dispatch(yourLibraryActions.fetchMyPlaylists());
-            dispatch(editPlaylistModalActions.setPlaylist({ playlist: null }));
-
-            return true;
+            await updatePlaylist(id, formData);
           } catch (error) {
-            setLoading(false);
-            return false;
+            console.log(error);
           }
         }}
         submitter={{
@@ -141,8 +117,8 @@ export const EditPlaylistModal = memo(() => {
                 src={
                   fileUrl
                     ? fileUrl
-                    : playlist?.image
-                    ? playlist.image
+                    : playlist?.coverImage
+                    ? `${import.meta.env.VITE_URL}${playlist.coverImage}` 
                     : PLAYLIST_DEFAULT_IMAGE
                 }
                 className='playlist-img'
@@ -162,4 +138,4 @@ export const EditPlaylistModal = memo(() => {
   );
 });
 
-EditPlaylistModal.displayName = 'EditPlaylistModal';
+export default EditPlaylistModal;

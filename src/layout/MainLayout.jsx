@@ -4,10 +4,13 @@ import { Col, Row } from "antd";
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import Library from "../components/Library";
 import { Navbar } from "../components/Layout/components/Navbar";
+import EditPlaylistModal from "../components/Modals/EditPlaylistModal";
 
 const MainLayout = () => {
     return (
         <div>
+            <EditPlaylistModal />
+
             <div className='main-container'>
                 <Row
                 wrap
