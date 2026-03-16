@@ -2,25 +2,20 @@ import { Modal } from 'antd';
 import { memo, useCallback, useEffect, useState } from 'react';
 import WhiteButton from '../Button';
 
-import { uiActions } from '../../store/slices/ui';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-
 import { DEFAULT_PAGE_COLOR } from '../../constants/spotify';
 
 import tinycolor from 'tinycolor2';
 import { getImageAnalysis2 } from '../../utils/imageAnyliser';
 
 const LoginModal = memo(() => {
-  const dispatch = useAppDispatch();
-
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [color, setColor] = useState(DEFAULT_PAGE_COLOR);
 
-  const imgUrl = useAppSelector((state) => state.ui.loginModalItem);
+  const imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlHg72kKQUwmwnv0c4hR8ylg0Img2EAWi_5y0QJ4upZ_QJj21KxVxRKEewcwM0uZ4Xp5L1runsN3lwQt83tZ5ZRZZjEojYsj7damlANg&s=10";
 
   const onClose = useCallback(() => {
-    dispatch(uiActions.closeLoginModal());
-  }, [dispatch]);
+    console.log("Close");
+  }, []);
 
   useEffect(() => {
     if (imgUrl) {
@@ -37,8 +32,6 @@ const LoginModal = memo(() => {
       setOpen(false);
     };
   }, [imgUrl]);
-
-  if (!imgUrl) return null;
 
   return (
     <Modal

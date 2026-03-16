@@ -5,11 +5,17 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import Library from "../components/Library";
 import { Navbar } from "../components/Layout/components/Navbar";
 import EditPlaylistModal from "../components/Modals/EditPlaylistModal";
+import LoginModal from "../components/Modals/LoginModal";
+import { useAuth } from "../context/AuthContext";
+import { LoginFooter } from "../components/Layout/components/LoginFooter";
 
 const MainLayout = () => {
+    const { isAuthenticated } = useAuth();
+
     return (
         <div>
             {/* <EditPlaylistModal /> */}
+            {/* <LoginModal /> */}
 
             <div className='main-container'>
                 <Row
@@ -58,7 +64,7 @@ const MainLayout = () => {
                 </Row>
             </div>
 
-            <footer><PlayerBar /></footer>
+            {<footer>{isAuthenticated ? <PlayerBar /> : <LoginFooter />}</footer>}
         </div>
     );
 };

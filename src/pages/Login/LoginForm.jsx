@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { AlertCircleIcon } from '../../components/Icons';
 import { useNavigate } from 'react-router-dom';
 import { login } from "../../services/auth.service";
+import { useAuth } from '../../context/AuthContext';
 
 function LoginForm() {
   const navigate = useNavigate();
+  const { login: loginContext } = useAuth();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -70,9 +72,11 @@ function LoginForm() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
+      loginContext(data.user);
+
       navigate("/home");
     } catch (error) {
-      setErrorMessage(err.response?.data?.message || "Đăng nhập thất bại");
+      setErrorMessage(error.response?.data?.message || "Đăng nhập thất bại");
     }
   };
 

@@ -4,8 +4,11 @@ import { memo } from 'react';
 import { LibraryTitle } from './LibraryTitle';
 import { ListItemComponent } from './ListCards';
 import { useUserPlaylists } from '../../hooks/queries/useUserPlaylists';
+import { useAuth } from '../../context/AuthContext';
+import { LibraryLoginInfo } from '../Layout/components/Library/loginInfo';
 
 const Library = () => {
+    const { isAuthenticated } = useAuth();
   return (
     <div className={'Navigation-section library open'}>
       <LibraryTitle />
@@ -20,12 +23,16 @@ const Library = () => {
                 height: `calc(100vh - 242px)`,
                 }}
             >
-                <LoggedContent />
+                {!isAuthenticated ? <AnonymousContent /> : <LoggedContent />}
             </div>
         </Col>
       </div>
     </div>
   );
+};
+
+const AnonymousContent = () => {
+  return <LibraryLoginInfo />;
 };
 
 const LoggedContent = memo(() => {

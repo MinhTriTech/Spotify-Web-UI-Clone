@@ -1,15 +1,10 @@
 import { memo, useCallback } from 'react';
 import WhiteButton from '../../../Button';
 
-import { uiActions } from '../../../../store/slices/ui';
-import { useAppDispatch } from '../../../../store/store';
-
 export const LoginFooter = memo(() => {
-  const dispatch = useAppDispatch();
-
   const handleLogin = useCallback(() => {
-      dispatch(uiActions.toggleLoginModalMain());
-    }, [dispatch]);
+    console.log("Login");
+  }, []);
 
   return (
     <div className='login-footer' style={{ margin: '0px 10px' }}>
