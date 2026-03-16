@@ -1,10 +1,12 @@
 import './styles/App.scss';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Suspense, lazy, useRef, useEffect } from 'react';
 
 import ProtectedRoute from './routes/ProtectedRoute';
 import MainLayout from './layout/MainLayout';
 import Profile from './pages/Profile';
+import { useAuth } from './context/AuthContext';
+import { Spinner } from './components/spinner';
 
 const LoginPage = lazy(() => import('./pages/Login'));
 const HomePage = lazy(() => import('./pages/Home'));
@@ -17,6 +19,26 @@ const SearchPlaylists = lazy(() => import('./pages/Search/Playlists'));
 const SearchUsers = lazy(() => import('./pages/Search/Users'));
 
 const Page404 = lazy(() => import('./pages/404'));
+
+const RootRedirect = () => {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) return <Spinner loading={loading}/>
+
+  return isAuthenticated
+  ? <Navigate to="/home" replace />
+  : <Navigate to="/login" replace />
+}
+
+const GuestRoute = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to="/home" replace />
+  }
+
+  return children;
+}
 
 // Component wrapper để sử dụng useLocation (phải nằm trong Router)
 const AppRoutes = () => {
@@ -33,19 +55,22 @@ const AppRoutes = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
+        <Route path="/" element={<RootRedirect />} />
+
+        <Route 
+          path="/login" 
+          element={
+            <GuestRoute>
+              <LoginPage />
+            </GuestRoute>
+          } 
+        />
+
         <Route element={<MainLayout />}>
-          <Route 
-            path="/login" 
-            element={<LoginPage />} 
-          />
 
           <Route 
             path="/home" 
-            element={
-              <ProtectedRoute>
-                  <HomePage />
-              </ProtectedRoute>
-            }
+            element={<HomePage />}
           />
 
           <Route 

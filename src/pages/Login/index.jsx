@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
+import { useNavigate } from 'react-router-dom';
+
 
 function LoginPage() {
   const [activeTab, setActiveTab] = useState('login');
+  const navigate = useNavigate();
 
   // Mock Google login for demo
   const handleMockGoogleLogin = async () => {
@@ -11,7 +14,7 @@ function LoginPage() {
   };
 
   const handleViewWithoutLogin = () => {
-    console.log("Xem không cần đăng nhập");
+    navigate("/home");
   };
 
   const handleClosePage = () => {
