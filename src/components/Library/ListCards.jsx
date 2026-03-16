@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { memo } from 'react';
 
 import { PLAYLIST_DEFAULT_IMAGE } from '../../constants/spotify';
@@ -34,11 +34,12 @@ const Pause = (
 );
 
 const Card = memo((props) => {
-  const { title, image, subtitle, onClick } = props;
+  const { title, image, subtitle, onClick, isActive } = props;
 
   return (
     <div
       onClick={onClick}
+      data-active={isActive}
       role="button"
       tabIndex={0}
       className="library-card"
@@ -96,7 +97,9 @@ const Card = memo((props) => {
 });
 
 const PlaylistCard = memo(({ playlist }) => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const isActive = String(id) === String(playlist?._id);
 
   const onClick = () => {
     navigate(`/playlist/${playlist._id}`);
@@ -108,6 +111,7 @@ const PlaylistCard = memo(({ playlist }) => {
       title={playlist.title}
       image={playlist.image ? playlist.image : PLAYLIST_DEFAULT_IMAGE}
       subtitle={playlist.description}
+      isActive={isActive}
     />
   );
 });
