@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
-export const getPlaylists = async () => {
+export const getMyPlaylists = async () => {
     const res = await axiosInstance.get("/playlist");
     return res.data;
 };
@@ -41,3 +41,8 @@ export const updatePlaylist = async (playlistId, data) => {
     const res = await axiosInstance.patch(`/playlist/${playlistId}`, data);
     return res.data;
 }
+
+export const getRandomPlaylists = async (limit) => {
+    const res = await axiosInstance.get(`/playlist/randomPlaylists?${limit}`);
+    return res.data;
+};

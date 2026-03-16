@@ -19,6 +19,7 @@
     "@mui/material": "^7.0.2",
     "@react-oauth/google": "^0.12.2",
     "@reduxjs/toolkit": "^2.6.1",
+    "@tanstack/react-query": "^5.90.21",
     "antd": "^5.24.7",
     "axios": "^1.8.4",
     "colorthief": "^2.6.0",

@@ -1,38 +1,18 @@
-import { useEffect, useState } from "react";
-import { getPlaylists } from "../../services/playlist.service";
+import { useState } from "react";
 import { Col, Row } from "antd";
 import GridItemList from "../../components/Lists/GridItemList";
 import { RandomTracks } from "./RandomTracks";
-import { getRandomTrack } from "../../services/track.service";
+import { Spinner } from "../../components/spinner";
+import { useRandomPlaylists } from "../../hooks/queries/useRandomPlaylists";
+import { useRandomTracks } from "../../hooks/queries/useRandomTracks";
 
 const HomePage = () => {
-  const [playlists, setPlaylists] = useState([]); 
-  const [randomTracks, setRandomTracks] = useState([]); 
+  const { data: playlists, isLoading: playlistLoading } = useRandomPlaylists();
+  const { data: tracks, isLoading: trackLoading } = useRandomTracks();
 
   const [color, setColor] = useState('rgb(66, 32, 35)');
 
-  useEffect(() => {
-    fetchRandomTracks();
-    fetchPlaylists();
-  }, []);
-
-  const fetchRandomTracks = async () => {
-    try {
-      const data = await getRandomTrack();
-      setRandomTracks(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchPlaylists = async () => {
-    try {
-      const data = await getPlaylists();
-      setPlaylists(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  if (playlistLoading || trackLoading) return <Spinner loading={playlistLoading || trackLoading} />;
 
   return (
     <div>
@@ -46,7 +26,7 @@ const HomePage = () => {
       >
         <Row gutter={[16, 16]}>
           <Col span={24}>
-            <RandomTracks setColor={setColor} tracks={randomTracks}/>
+            <RandomTracks setColor={setColor} tracks={tracks}/>
           </Col>
 
           <Col span={24}>

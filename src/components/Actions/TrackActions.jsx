@@ -3,7 +3,7 @@ import { Dropdown } from 'antd';
 import { useParams } from 'react-router-dom';
 
 import { DeleteIcon, AddToPlaylist} from '../Icons';
-import { addTrackToPlaylist, getPlaylists, createPlaylist, getPlaylistById, removeTrackFromPlaylist } from '../../services/playlist.service';
+import { addTrackToPlaylist, getRandomPlaylists, createPlaylist, getPlaylistById, removeTrackFromPlaylist } from '../../services/playlist.service';
 import { usePlayer } from '../../context/PlayerContext';
 
 const TrackActionsWrapper = memo((props) => {
@@ -19,7 +19,7 @@ const TrackActionsWrapper = memo((props) => {
     const loadFilteredPlaylists = async () => {
       if (!track?._id) return;
 
-      const myPlaylists = await getPlaylists();
+      const myPlaylists = await getRandomPlaylists();
       
       if (!myPlaylists || myPlaylists.length === 0) return;
 

@@ -1,9 +1,9 @@
 import { Col } from 'antd';
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 
 import { LibraryTitle } from './LibraryTitle';
 import { ListItemComponent } from './ListCards';
-import { getPlaylists } from '../../services/playlist.service';
+import { useUserPlaylists } from '../../hooks/queries/useUserPlaylists';
 
 const Library = () => {
   return (
@@ -17,7 +17,7 @@ const Library = () => {
                 style={{
                 overflowY: 'scroll',
                 overflowX: 'hidden',
-                height: `calc(100vh - 218px)`,
+                height: `calc(100vh - 242px)`,
                 }}
             >
                 <LoggedContent />
@@ -28,38 +28,10 @@ const Library = () => {
   );
 };
 
-const getItemKey = (item) => {
-  if (item.playlist_id) return `playlist-${item.playlist_id}`;
-  if (item.id) return `likeSongs-${item.id}`;
-  return `unknown-${Math.random()}`; 
-};
-
 const LoggedContent = memo(() => {
-    const [playlists, setPlaylists] = useState([]); 
+    const { data: playlists, isLoading: playlistLoading } = useUserPlaylists(); 
 
-    const fetchPlaylists = async () => {
-        try {
-            const data = await getPlaylists();
-            setPlaylists(data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        fetchPlaylists();
-        
-        // Listen for playlist created event
-        const handlePlaylistCreated = () => {
-            fetchPlaylists();
-        };
-        
-        window.addEventListener('playlist-created', handlePlaylistCreated);
-        
-        return () => {
-            window.removeEventListener('playlist-created', handlePlaylistCreated);
-        };
-    }, []);
+    if (playlistLoading) return <div style={{display: 'flex' ,alignItems: 'center' ,color: 'white', height: '100%', justifyContent: 'center'}}>Đang tải...</div>
   
     return (
         <div>

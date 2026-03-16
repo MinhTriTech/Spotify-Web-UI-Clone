@@ -51,7 +51,7 @@ const AppLayout = memo((props) => {
           style={{
             overflow: 'hidden',
             height: `calc(100vh - ${
-              '105'
+              '115'
             }px)`,
           }}
         >
