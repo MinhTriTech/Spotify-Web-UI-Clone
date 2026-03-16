@@ -43,6 +43,7 @@ export const updatePlaylist = async (playlistId, data) => {
 }
 
 export const getRandomPlaylists = async (limit) => {
-    const res = await axiosInstance.get(`/playlist/randomPlaylists?${limit}`);
+    const query = limit ? `?limit=${limit}` : "";
+    const res = await axiosInstance.get(`/playlist/randomPlaylists${query}`);
     return res.data;
 };

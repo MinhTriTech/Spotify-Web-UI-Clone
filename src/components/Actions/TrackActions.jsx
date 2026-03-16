@@ -1,9 +1,10 @@
 import { memo, useState, useEffect } from 'react';
 import { Dropdown } from 'antd';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 import { DeleteIcon, AddToPlaylist} from '../Icons';
-import { addTrackToPlaylist, getRandomPlaylists, createPlaylist, getPlaylistById, removeTrackFromPlaylist } from '../../services/playlist.service';
+import { addTrackToPlaylist, createPlaylist, getMyPlaylists, removeTrackFromPlaylist } from '../../services/playlist.service';
 import { usePlayer } from '../../context/PlayerContext';
 
 const TrackActionsWrapper = memo((props) => {
@@ -12,30 +13,28 @@ const TrackActionsWrapper = memo((props) => {
   const { id } = useParams();
 
   const { currentPlaylist } = usePlayer();
+  const { data: myPlaylists = [] } = useQuery({
+    queryKey: ['myPlaylists'],
+    queryFn: getMyPlaylists,
+    enabled: false,
+  });
 
   const [playlistOptions, setPlaylistOptions] = useState([]);
 
   useEffect(() => {
-    const loadFilteredPlaylists = async () => {
+    const loadFilteredPlaylists = () => {
       if (!track?._id) return;
-
-      const myPlaylists = await getRandomPlaylists();
-      
       if (!myPlaylists || myPlaylists.length === 0) return;
 
-      const filtered = await Promise.all(
-        myPlaylists
-          .filter(p => p._id !== currentPlaylist)
-          .map(async (p) => {
-            const response = await getPlaylistById(p._id);
-            
-            const containsTrack = response.tracks.some(song => song._id === track._id);
-            
-            return !containsTrack ? p : null;
-          })
-      );
+      const validPlaylists = myPlaylists.filter((playlist) => {
+        if (!playlist || playlist._id === currentPlaylist) return false;
 
-      const validPlaylists = filtered.filter(Boolean);
+        const trackIds = (playlist.tracks || []).map((trackItem) =>
+          typeof trackItem === 'string' ? trackItem : trackItem?._id
+        );
+
+        return !trackIds.includes(track._id);
+      });
 
       const options = validPlaylists.map((p) => ({
         key: p._id,
@@ -49,7 +48,7 @@ const TrackActionsWrapper = memo((props) => {
     };
 
     loadFilteredPlaylists();
-  }, [track._id]);
+  }, [track?._id, myPlaylists, currentPlaylist]);
 
   const getItems = () => {
     const items = [
