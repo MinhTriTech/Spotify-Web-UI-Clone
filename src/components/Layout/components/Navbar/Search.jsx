@@ -6,10 +6,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
-const INITIAL_VALUE = window.location.href.includes('/search/')
-  ? window.location.href.split('/').reverse()[0]
-  : '';
-
 function usePrevious(value) {
   const ref = useRef(null);
   useEffect(() => {
@@ -25,6 +21,18 @@ export const Search = memo(() => {
   const [inputValue, setInputValue] = useState('');
   const [debouncedValue] = useDebounce(inputValue, 600);
   const prevValue = usePrevious(debouncedValue);
+
+  useEffect(() => {
+    const isSearchRoute = location.pathname.startsWith('/search/');
+
+    if (!isSearchRoute) {
+      setInputValue('');
+      return;
+    }
+
+    const searchValue = location.pathname.split('/')[2] || '';
+    setInputValue(decodeURIComponent(searchValue));
+  }, [location.pathname]);
 
   useEffect(() => {
     if (debouncedValue !== '' && debouncedValue !== prevValue) {
@@ -46,7 +54,7 @@ export const Search = memo(() => {
         size="large"
         className="search-input"
         prefix={<SearchIcon />}
-        defaultValue={INITIAL_VALUE}
+        value={inputValue}
         onChange={(e) => {
           setInputValue(e.target.value);
         }}

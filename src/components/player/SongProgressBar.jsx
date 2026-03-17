@@ -4,9 +4,11 @@ import ModernSlider from "../Slider";
 import { formatTimeDuration } from "../../utils/common.js"
 
 const SongProgressBar = () => {
-    const { audioRef, duration, currentTime, progressSlider } = usePlayer();
+    const { audioRef, duration, currentTime, progressSlider, currentTrack } = usePlayer();
     const [isDragging, setIsDragging] = useState(false);
     const [localProgress, setLocalProgress] = useState(0);
+
+    const disabled = !currentTrack;
     
     // Khi user kéo slider - chỉ update UI
     const handleSliderChange = useCallback((value) => {
@@ -43,7 +45,7 @@ const SongProgressBar = () => {
             </div>
             <div className="w-full">
                 <ModernSlider 
-                    isEnabled
+                    disable={disabled}
                     value={displayProgress}
                     onChange={handleSliderChange}
                     onChangeComplete={handleSliderChangeComplete}

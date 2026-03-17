@@ -31,10 +31,12 @@ const HomePage = () => {
           <Col span={24}>
             <RandomTracks setColor={setColor} tracks={tracks}/>
           </Col> 
-
-          <Col span={24}>
-            <GridItemList title="Danh sách phát hôm nay" items={playlists}/>
-          </Col> 
+          
+          {playlists?.length > 0 && (
+            <Col span={24}>
+              <GridItemList title="Danh sách phát hôm nay" items={playlists}/>
+            </Col> 
+          )}
 
           <Col span={24}>
             <GridItemList title="Người dùng nổi bật" items={users}/>

@@ -1,8 +1,10 @@
 import { memo } from 'react';
 
-import WhiteButton from '../../../Button';
-import { DetailsCard } from '../NowPlaying/Details/card';
-import { useModal } from '../../../../context/ModalContext';
+
+
+import WhiteButton from '../Button';
+import { DetailsCard } from '../Layout/components/NowPlaying/Details/card';
+import { useModal } from '../../context/ModalContext';
 
 export const LibraryLoginInfo = memo(() => {
   const { openModal } = useModal();

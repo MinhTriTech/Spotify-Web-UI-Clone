@@ -5,7 +5,8 @@ import { LibraryTitle } from './LibraryTitle';
 import { ListItemComponent } from './ListCards';
 import { useUserPlaylists } from '../../hooks/queries/useUserPlaylists';
 import { useAuth } from '../../context/AuthContext';
-import { LibraryLoginInfo } from '../Layout/components/Library/loginInfo';
+import { LibraryLoginInfo } from './LoginInfo';
+
 
 const Library = () => {
     const { isAuthenticated } = useAuth();

@@ -1,11 +1,12 @@
 import { memo, useState, useEffect } from 'react';
 import { Dropdown } from 'antd';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { DeleteIcon, AddToPlaylist} from '../Icons';
-import { addTrackToPlaylist, createPlaylist, getMyPlaylists, removeTrackFromPlaylist } from '../../services/playlist.service';
+import { addTrackToPlaylist, createPlaylist, removeTrackFromPlaylist } from '../../services/playlist.service';
 import { usePlayer } from '../../context/PlayerContext';
+import { useUserPlaylists } from '../../hooks/queries/useUserPlaylists';
 
 const TrackActionsWrapper = memo((props) => {
   const { children, track, canEdit, trigger } = props;
@@ -13,13 +14,23 @@ const TrackActionsWrapper = memo((props) => {
   const { id } = useParams();
 
   const { currentPlaylist } = usePlayer();
-  const { data: myPlaylists = [] } = useQuery({
-    queryKey: ['myPlaylists'],
-    queryFn: getMyPlaylists,
-    enabled: false,
-  });
+  const queryClient = useQueryClient();
+  const { data: myPlaylists = [] } = useUserPlaylists();
 
   const [playlistOptions, setPlaylistOptions] = useState([]);
+
+  const getTrackId = (trackItem) => {
+    if (!trackItem) return null;
+    if (typeof trackItem === 'string') return trackItem;
+    if (trackItem?._id) return trackItem._id;
+
+    if (trackItem?.track) { 
+      if (typeof trackItem.track === 'string') return trackItem.track;
+      if (trackItem.track?._id) return trackItem.track._id;
+    }
+
+    return null;
+  };
 
   useEffect(() => {
     const loadFilteredPlaylists = () => {
@@ -30,10 +41,10 @@ const TrackActionsWrapper = memo((props) => {
         if (!playlist || playlist._id === currentPlaylist) return false;
 
         const trackIds = (playlist.tracks || []).map((trackItem) =>
-          typeof trackItem === 'string' ? trackItem : trackItem?._id
+          getTrackId(trackItem)
         );
 
-        return !trackIds.includes(track._id);
+        return !trackIds.some((trackId) => String(trackId) === String(track._id));
       });
 
       const options = validPlaylists.map((p) => ({
@@ -41,6 +52,7 @@ const TrackActionsWrapper = memo((props) => {
         label: p.title,
         onClick: async () => {
           await addTrackToPlaylist(p._id, track._id);
+          await queryClient.invalidateQueries({ queryKey: ['myPlaylists'] });
         },
       }));
 
@@ -66,10 +78,14 @@ const TrackActionsWrapper = memo((props) => {
                   title: "Danh sách phát của tôi",
                   description: "",
                 });
-                
-                window.dispatchEvent(new CustomEvent('playlist-created'));
+
+                queryClient.setQueryData(['myPlaylists'], (oldPlaylists = []) => {
+                  if (oldPlaylists.some((item) => item._id === playlist._id)) return oldPlaylists;
+                  return [playlist, ...oldPlaylists];
+                });
                 
                 await addTrackToPlaylist(playlist._id, track._id);
+                await queryClient.invalidateQueries({ queryKey: ['myPlaylists'] });
               } catch (error) {
                 console.error('Failed to create playlist:', error);
               }

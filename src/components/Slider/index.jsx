@@ -1,7 +1,7 @@
 import '../../styles/slider.css';
 
 const ModernSlider = ({
-  isEnabled = true,
+  isEnabled = false,
   value = 0,
   min = 0,
   max = 1,
@@ -9,6 +9,7 @@ const ModernSlider = ({
   onChange,
   onChangeComplete,
   controlType = 'default',
+  disable,
   ...otherProps
 }) => {
   // Đảm bảo value luôn là số hợp lệ
@@ -30,7 +31,7 @@ const ModernSlider = ({
   };
 
 //   const { currentSrc } = useAudio();
-  const disabled = false;
+  const disabled = disable;
 
   const percentage = ((safeValue - min) / (max - min)) * 100;
 

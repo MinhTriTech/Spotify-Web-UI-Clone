@@ -17,10 +17,11 @@ const LoginButton = () => {
 const Header = ({ opacity }) => {
   const navigate = useNavigate();
 
-   const { isAuthenticated } = useAuth();
+   const { isAuthenticated, logout } = useAuth();
 
   const handleLogout = () => {
-    console.log("Đăng xuất")
+    logout();
+    navigate('/login');
   };
 
   const menuItems = [

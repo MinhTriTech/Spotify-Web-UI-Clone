@@ -1,5 +1,5 @@
 import { Space } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Chip from '../../components/Chip';
 import { PageHeader } from '../../components/Layout/components/Header';
 
@@ -16,8 +16,10 @@ export const SearchHeader = (props) => {
   const { container, sectionContainer, color } = props;
 
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const params = useParams();
-  const section = 'ALL'; 
+  const pathSection = pathname.split('/')[3]?.toUpperCase();
+  const section = SECTIONS.includes(pathSection) ? pathSection : 'ALL';
 
   return (
     <PageHeader

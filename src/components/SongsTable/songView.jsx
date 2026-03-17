@@ -95,7 +95,7 @@ const Artists = ({ song, isList }) => {
 const Actions = ({ song }) => {
   return (
     <div className='text-right actions tablet-hidden' style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-      <TrackActionsWrapper canEdit={true} track={song} trigger={['click']}>
+      <TrackActionsWrapper canEdit={false} track={song} trigger={['click']}>
         <Tooltip title={`Tùy chọn khác cho ${song.title}`}>
           <div>
             <MenuIcon />
