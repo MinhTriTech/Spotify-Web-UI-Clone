@@ -47,3 +47,8 @@ export const getRandomPlaylists = async (limit) => {
     const res = await axiosInstance.get(`/playlist/randomPlaylists${query}`);
     return res.data;
 };
+
+export const deletePlaylist = async (playlistId) => {
+    const res = await axiosInstance.delete(`/playlist/${playlistId}`);
+    return res.data;
+}
