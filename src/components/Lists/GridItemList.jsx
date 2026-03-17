@@ -1,9 +1,13 @@
 import { Flex } from 'antd';
 import { Link } from 'react-router-dom';
-import { TrackCard } from './GridCards';
+import { TrackCard, ArtistCard } from './GridCards';
 
 export function GridItemComponent(props) {
   const { item } = props;
+
+  if (item._id && item.username) {
+    return <ArtistCard item={item} />;
+  }
 
   return <TrackCard item={item} />;
 }

@@ -10,3 +10,8 @@ export const getUserProfile = async (id) => {
     return res.data;
 };
 
+export const getRandomUser = async (limit) => {
+    const query = limit ? `?limit=${limit}` : "";
+    const res = await axiosInstance.get(`/user/randomUsers${query}`);
+    return res.data;
+};
