@@ -57,7 +57,11 @@ const MainLayout = () => {
                             <PanelResizeHandle className='resize-handler' />
                             
                             <Panel id='center' order={2} style={{ borderRadius: 5 }}>
-                                <Outlet />
+                                <div className="Main-section">
+                                    <div style={{ minHeight: 'calc(100vh - 230px)', width: '100%' }}>
+                                        <Outlet />
+                                    </div>
+                                </div>
                             </Panel>
                         </PanelGroup>
                     </Col>

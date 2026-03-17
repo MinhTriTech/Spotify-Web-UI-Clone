@@ -33,12 +33,14 @@ const Card = ({ title, image, rounded, description, onClick }) => {
 
 export const TrackCard = ({ item }) => {
   const navigate = useNavigate();
+  const tracks = item.tracks;
 
   return (
     <Card
       title={item.title}
       image={item.image ? item.image : PLAYLIST_DEFAULT_IMAGE}
       onClick={() => navigate(`/playlist/${item._id}`)}
+      description={`${tracks.length} bài hát`}
     />
   );
 };
@@ -56,6 +58,7 @@ export const ArtistCard = ({ item, onClick }) => {
         context={{ 
           type: "user",
         }}
+        description={`${item.playlistCount} danh sách phát`}
         onClick={() => navigate(`/user/${item._id}`)}
       />
     </div>
