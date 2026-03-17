@@ -109,7 +109,7 @@ const PlaylistCard = memo(({ playlist }) => {
     <Card
       onClick={onClick}
       title={playlist.title}
-      image={playlist.image ? playlist.image : PLAYLIST_DEFAULT_IMAGE}
+      image={playlist.coverImage ? `${import.meta.env.VITE_URL}${playlist.coverImage}`  : PLAYLIST_DEFAULT_IMAGE}
       subtitle={playlist.description}
       isActive={isActive}
     />

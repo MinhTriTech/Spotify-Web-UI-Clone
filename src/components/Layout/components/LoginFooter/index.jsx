@@ -1,10 +1,9 @@
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 import WhiteButton from '../../../Button';
+import { useModal } from '../../../../context/ModalContext';
 
 export const LoginFooter = memo(() => {
-  const handleLogin = useCallback(() => {
-    console.log("Login");
-  }, []);
+  const { openModal } = useModal();
 
   return (
     <div className='login-footer' style={{ margin: '0px 10px' }}>
@@ -14,7 +13,7 @@ export const LoginFooter = memo(() => {
           <p className='description'>Đăng nhập để sử dụng đầy đủ tính năng của ứng dụng.</p>
         </div>
 
-        <WhiteButton title="Đăng nhập" onClick={handleLogin}/>
+        <WhiteButton title="Đăng nhập" onClick={() => openModal('login')}/>
       </div>
     </div>
   );

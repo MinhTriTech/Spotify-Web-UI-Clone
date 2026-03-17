@@ -8,14 +8,21 @@ import EditPlaylistModal from "../components/Modals/EditPlaylistModal";
 import LoginModal from "../components/Modals/LoginModal";
 import { useAuth } from "../context/AuthContext";
 import { LoginFooter } from "../components/Layout/components/LoginFooter";
+import { useModal } from "../context/ModalContext";
 
 const MainLayout = () => {
     const { isAuthenticated } = useAuth();
+    const { modal, closeModal } = useModal();
 
     return (
         <div>
-            {/* <EditPlaylistModal /> */}
-            {/* <LoginModal /> */}
+            {modal.type == "updatePlaylist" && (
+                <EditPlaylistModal {...modal.props} onClose={closeModal}/>
+            )}
+
+            {modal.type == "login" && (
+                <LoginModal {...modal.props} onClose={closeModal}/> 
+            )}
 
             <div className='main-container'>
                 <Row

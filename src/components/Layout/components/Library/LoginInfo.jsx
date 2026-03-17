@@ -1,12 +1,11 @@
-import { memo, useCallback, useEffect } from 'react';
+import { memo } from 'react';
 
 import WhiteButton from '../../../Button';
 import { DetailsCard } from '../NowPlaying/Details/card';
+import { useModal } from '../../../../context/ModalContext';
 
 export const LibraryLoginInfo = memo(() => {
-  const handleLogin = useCallback(() => {
-    console.log("Login");
-  }, []);
+  const { openModal } = useModal();
 
   return (
     <div style={{ marginRight: -5 }}>
@@ -18,7 +17,7 @@ export const LibraryLoginInfo = memo(() => {
           <WhiteButton
             size='small'
             title="Đăng nhập"
-            onClick={handleLogin}
+            onClick={() => openModal('login')}
           />
         </div>
       </DetailsCard>

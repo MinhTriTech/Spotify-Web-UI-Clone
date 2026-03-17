@@ -6,9 +6,10 @@ import { PLAYLIST_DEFAULT_IMAGE } from '../../constants/spotify';
 import { getPlaylistById, updatePlaylist } from '../../services/playlist.service';
 import { useParams } from 'react-router-dom';
 
-const EditPlaylistModal = memo(() => {
+const EditPlaylistModal = memo(({ playlistId, onClose }) => {
   const formRef = useRef(null);
-  const { id } = useParams();
+  const { id: routeId } = useParams();
+  const id = playlistId || routeId;
 
   const [playlist, setPlaylist] = useState(null);
 
@@ -30,14 +31,18 @@ const EditPlaylistModal = memo(() => {
   }
 
   useEffect(() => {
-    const getPlaylist = async () => {
-      const playlist = await getPlaylistById(id);
-      
-      setPlaylist(playlist);
-      formRef.current?.setFieldsValue({ title: playlist?.title });
+    const fetchPlaylist = async () => {
+      if (!id) return;
+      try {
+        const playlistData = await getPlaylistById(id);
+        setPlaylist(playlistData);
+        formRef.current?.setFieldsValue({ title: playlistData?.title });
+      } catch (error) {
+        console.log(error);
+      }
     };
 
-    getPlaylist();
+    fetchPlaylist();
   }, [id]);
 
   return (
@@ -45,7 +50,8 @@ const EditPlaylistModal = memo(() => {
       centered
       width={550}
       footer={null}
-      open={!!playlist}
+      open
+      onCancel={onClose}
       title={
         <h1
           style={{
@@ -65,14 +71,22 @@ const EditPlaylistModal = memo(() => {
         style={{ marginTop: 10 }}
         onFinish={async (values) => {
           try {
+            if (!id) return false;
+
+            setLoading(true);
             const formData = new FormData();
 
             formData.append("title", values.title);
-            formData.append("coverImage", file);
+            if (file) {
+              formData.append("coverImage", file);
+            }
 
             await updatePlaylist(id, formData);
+            onClose?.();
           } catch (error) {
             console.log(error);
+          } finally {
+            setLoading(false);
           }
         }}
         submitter={{

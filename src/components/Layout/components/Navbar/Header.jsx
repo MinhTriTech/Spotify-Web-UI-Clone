@@ -4,16 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { ARTISTS_DEFAULT_IMAGE } from '../../../../constants/spotify';
 import { ArtistIcon } from '../../../Icons';
 import { useAuth } from '../../../../context/AuthContext';
-import { useCallback } from 'react';
 import WhiteButton from '../../../Button';
+import { useModal } from '../../../../context/ModalContext';
 
 const LoginButton = () => {
-  const handleLogin = useCallback(() => {
-    console.log("Login");
-  }, []);
-
+  const { openModal } = useModal();
   return (
-    <WhiteButton title="Đăng nhập" onClick={handleLogin} />
+    <WhiteButton title="Đăng nhập" onClick={() => openModal('login')} />
   );
 };
 

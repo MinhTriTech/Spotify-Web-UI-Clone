@@ -1,26 +1,15 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { Dropdown } from 'antd';
 import { DeleteIcon, EditIcon } from '../Icons';
+import { useModal } from '../../context/ModalContext';
+
 
 
 export const PlayListActionsWrapper = memo((props) => {
   const { children, playlist } = props;
 
-  // const dispatch = useAppDispatch();
-  // const userId = useAppSelector((state) => state.auth.user.user_info.id);
-  
-  // const canEdit = useMemo(() => userId === playlist.created_by_id, [userId, playlist.created_by_id]);
-  
-  const handleUserValidation = useCallback(
-    (button) => {
-      if (!userId) {
-        dispatch(button ? uiActions.openLoginButton() : uiActions.openLoginTooltip());
-        return false;
-      }
-      return true;
-    },
-    []
-  );
+  const { openModal } = useModal();
+  const playlistId = playlist?._id || playlist?.playlist_id || playlist?.id;
 
   const items = useMemo(() => {
     const items = [];
@@ -31,7 +20,8 @@ export const PlayListActionsWrapper = memo((props) => {
           key: 1,
           icon: <EditIcon />,
           onClick: () => {
-
+            if (!playlistId) return;
+            openModal('updatePlaylist', { playlistId });
           },
         },
         {
@@ -47,7 +37,7 @@ export const PlayListActionsWrapper = memo((props) => {
         }
       );
     return items;
-  }, [  handleUserValidation,, playlist, props]);
+  }, [openModal, playlistId]);
 
   return (
     <Dropdown menu={{ items }} trigger={props.trigger}>
