@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 
 import { DEFAULT_PAGE_COLOR } from "../../constants/spotify";
 
-import UserHoverableMenu from "./scrollHoverable";
 import { UserHeader } from "./UserHeader";
 import { MyPlaylistsSection } from "./MyPlaylistsSection";
 
@@ -46,13 +45,10 @@ const Profile = (props) => {
 
     return (
         <div className='Profile-section' ref={ref}>
-            <UserHoverableMenu color={color} container={props.container} sectionContainer={ref} profile={profile.user}/>
-
             <UserHeader color={color} profile={profile.user}/>
 
             <div
             style={{
-                maxHeight: 323,
                 padding: '20px 15px',
                 background: `linear-gradient(${color} -50%, ${DEFAULT_PAGE_COLOR} 90%)`,
             }}

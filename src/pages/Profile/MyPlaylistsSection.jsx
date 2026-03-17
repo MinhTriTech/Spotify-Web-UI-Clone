@@ -10,7 +10,7 @@ export const MyPlaylistsSection = memo(( props ) => {
   }
 
   return (
-    <div style={{ marginTop: 10 }}>
+    <div style={{ marginTop: 10, marginBottom: 10 }}>
       <GridItemList
         items={playlists}
         title="Playlist"

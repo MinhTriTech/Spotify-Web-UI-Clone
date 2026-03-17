@@ -38,7 +38,7 @@ export const TrackCard = ({ item }) => {
   return (
     <Card
       title={item.title}
-      image={item.image ? item.image : PLAYLIST_DEFAULT_IMAGE}
+      image={item.coverImage ? `${import.meta.env.VITE_URL}${item.coverImage}` : PLAYLIST_DEFAULT_IMAGE}
       onClick={() => navigate(`/playlist/${item._id}`)}
       description={`${tracks.length} bài hát`}
     />

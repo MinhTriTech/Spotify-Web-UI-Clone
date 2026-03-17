@@ -13,9 +13,6 @@ export function GridItemComponent(props) {
   if (item._id && item.username) {
     return <ArtistCard item={item} onClick={onClick} />;
   }
-
-
-  
   return null;
 }
 

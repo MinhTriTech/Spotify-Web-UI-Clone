@@ -24,6 +24,7 @@ const HomePage = () => {
           paddingTop: 0,
           transition: 'background 5s',
           background: `linear-gradient(180deg, ${color} 2%, rgb(18, 18, 18) 18%)`,
+          marginBottom: 8
         }}
       >
         <Row gutter={[16, 16]}>
