@@ -51,39 +51,23 @@
 ### Trang chưa đăng nhập
 
 <div align="center">
-  <img src="./images/TrangChuTruocDangNhap.png" width="48%" alt="Trang chủ trước đăng nhập" />
-  <img src="./images/DangNhap.png" width="48%" alt="Trang đăng nhập" />
+  <img src="./images/TrangChuTruocDangNhap.png" width="32%" alt="Trang chủ trước đăng nhập" />
+  <img src="./images/DangNhap.png" width="32%" alt="Trang đăng nhập" />
+  <img src="./images/DangKy.png" width="32%" alt="Trang đăng ký" />
 </div>
 
-### Giao diện người dùng (User)
+### Giao diện người dùng 
 
 <div align="center">
-  <img src="./images/User/TrangChu.png" width="32%" alt="Trang chủ User" />
-  <img src="./images/User/TimKiem.png" width="32%" alt="Tìm kiếm" />
-  <img src="./images/User/DanhSachBaiHat.png" width="32%" alt="Danh sách bài hát" />
+  <img src="./images/TrangChuSauDangNhap.png" width="100%" alt="Trang chủ" />
 </div>
 <div align="center">
-  <img src="./images/User/TrangNgheSi.png" width="32%" alt="Trang nghệ sĩ" />
-  <img src="./images/User/TrangCaNhan.png" width="32%" alt="Trang cá nhân" />
-  <img src="./images/User/DanhSachBaiHatYeuThich.png" width="32%" alt="Bài hát yêu thích" />
+  <img src="./images/TrangDanhSachPhat.png" width="32%" alt="Trang danh sách phát" />
+  <img src="./images/TrangCaNhan.png" width="32%" alt="Trang cá nhân" />
+  <img src="./images/TrangTimKiem.png" width="32%" alt="Trang tìm kiếm" />
 </div>
 <div align="center">
-  <img src="./images/User/NhanTin.png" width="32%" alt="Nhắn tin" />
-  <img src="./images/User/NoiDungTinNhan.png" width="32%" alt="Nội dung tin nhắn" />
-  <img src="./images/User/ToanManHinh.png" width="32%" alt="Toàn màn hình" />
-</div>
-
-### Giao diện quản trị (Admin)
-
-<div align="center">
-  <img src="./images/Admin/TrangChu.png" width="32%" alt="Admin trang chủ" />
-  <img src="./images/Admin/QuanLyNguoiDung.png" width="32%" alt="Quản lý người dùng" />
-  <img src="./images/Admin/QuanLyNgheSi.png" width="32%" alt="Quản lý nghệ sĩ" />
-</div>
-<div align="center">
-  <img src="./images/Admin/QuanLyBaiHat.png" width="32%" alt="Quản lý bài hát" />
-  <img src="./images/Admin/QuanLyAlbum.png" width="32%" alt="Quản lý album" />
-  <img src="./images/Admin/QuanLyDanhSachPhat.png" width="32%" alt="Quản lý danh sách phát" />
+  <img src="./images/DangPhatNhac.png" width="100%" alt="Đang phát nhạc" />
 </div>
 
 > 📁 Xem toàn bộ ảnh trong [thư mục images](./images).
@@ -291,15 +275,6 @@ Sử dụng [Conventional Commits](https://www.conventionalcommits.org/):
 - `style:` – Thay đổi về giao diện/style
 - `refactor:` – Tái cấu trúc code
 - `chore:` – Công việc bảo trì
-
----
-
-## 👥 Thành viên dự án
-
-| Tên | Vai trò |
-|-----|---------|
-| **Ngô Hoàng Minh Trí** | Phát triển giao diện người dùng (User UI) |
-| **Nguyễn Quốc Đại** | Phát triển giao diện quản trị (Admin UI) |
 
 ---
 
