@@ -13,7 +13,7 @@ const LoginModal = memo(({ onClose }) => {
   const [color, setColor] = useState(DEFAULT_PAGE_COLOR);
   const navigate = useNavigate();
 
-  const imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlHg72kKQUwmwnv0c4hR8ylg0Img2EAWi_5y0QJ4upZ_QJj21KxVxRKEewcwM0uZ4Xp5L1runsN3lwQt83tZ5ZRZZjEojYsj7damlANg&s=10";
+  const imgUrl = "/images/background.jpg";
 
   useEffect(() => {
     if (imgUrl) {
