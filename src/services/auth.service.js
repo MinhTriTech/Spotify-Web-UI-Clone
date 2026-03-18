@@ -9,9 +9,14 @@ export const login = async (data) => {
 };
 
 export const register = async (data) => {
-    const res = await axios.post(`${API_URL}/register`, data);
-    return res;
-}
+    const res = await axiosInstace.post("/auth/register", data);
+    return res.data;
+};
+
+export const loginWithGoogle = async (payload) => {
+    const res = await axiosInstace.post("/auth/google", payload);
+    return res.data;
+};
 
 export const getMe = async () => {
     const res = await axiosInstace.get("/user/me");

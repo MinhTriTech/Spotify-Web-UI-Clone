@@ -1,5 +1,6 @@
 import { Modal } from 'antd';
 import { memo, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import WhiteButton from '../Button';
 
 import { DEFAULT_PAGE_COLOR } from '../../constants/spotify';
@@ -10,6 +11,7 @@ import { getImageAnalysis2 } from '../../utils/imageAnyliser';
 const LoginModal = memo(({ onClose }) => {
   const [open, setOpen] = useState(true);
   const [color, setColor] = useState(DEFAULT_PAGE_COLOR);
+  const navigate = useNavigate();
 
   const imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlHg72kKQUwmwnv0c4hR8ylg0Img2EAWi_5y0QJ4upZ_QJj21KxVxRKEewcwM0uZ4Xp5L1runsN3lwQt83tZ5ZRZZjEojYsj7damlANg&s=10";
 
@@ -28,6 +30,11 @@ const LoginModal = memo(({ onClose }) => {
       setOpen(false);
     };
   }, [imgUrl]);
+
+  const handleLoginClick = () => {
+    onClose?.();
+    navigate('/login');
+  };
 
   return (
     <Modal
@@ -59,7 +66,7 @@ const LoginModal = memo(({ onClose }) => {
           </h2>
 
           <div style={{ marginTop: 25 }}>
-            <WhiteButton title="Đăng nhập" />
+            <WhiteButton title="Đăng nhập" onClick={handleLoginClick} />
           </div>
         </div>
       </div>

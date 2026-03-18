@@ -8,11 +8,20 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            setUser(null);
+            setLoading(false);
+            return;
+        }
+
         const fetchUser = async () => {
             try {
                 const res = await getMyProfile();
                 setUser(res);
             } catch (error) {
+                localStorage.removeItem("token");
                 setUser(null);
             } finally {
                 setLoading(false);

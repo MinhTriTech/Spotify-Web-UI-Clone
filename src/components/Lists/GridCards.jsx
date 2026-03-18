@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { ARTISTS_DEFAULT_IMAGE, PLAYLIST_DEFAULT_IMAGE } from '../../constants/spotify';
 import { usePlayer } from '../../context/PlayerContext';
+import { useAuth } from '../../context/AuthContext';
+import { useModal } from '../../context/ModalContext';
 import { PlayCircle } from './PlayCircle';
 
 const Card = ({ title, image, rounded, description, onClick, context, tracks }) => {
@@ -41,13 +43,24 @@ const Card = ({ title, image, rounded, description, onClick, context, tracks }) 
 
 export const TrackCard = ({ item }) => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const { openModal } = useModal();
   const tracks = item.tracks;
+
+  const handleOpenPlaylist = () => {
+    if (!isAuthenticated) {
+      openModal('login');
+      return;
+    }
+
+    navigate(`/playlist/${item._id}`);
+  };
 
   return (
     <Card
       title={item.title}
       image={item.coverImage ? `${import.meta.env.VITE_URL}${item.coverImage}` : PLAYLIST_DEFAULT_IMAGE}
-      onClick={() => navigate(`/playlist/${item._id}`)}
+      onClick={handleOpenPlaylist}
       description={`${tracks.length ?? 0} bài hát`}
       context={item}
       tracks={tracks}
@@ -58,6 +71,17 @@ export const TrackCard = ({ item }) => {
 export const ArtistCard = ({ item, onClick }) => {
 
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const { openModal } = useModal();
+
+  const handleOpenArtist = () => {
+    if (!isAuthenticated) {
+      openModal('login');
+      return;
+    }
+
+    navigate(`/user/${item._id}`);
+  };
 
   return (
     <div onClick={onClick}>
@@ -69,7 +93,7 @@ export const ArtistCard = ({ item, onClick }) => {
           type: "user",
         }}
         description={`${item.playlistCount ?? 0} danh sách phát`}
-        onClick={() => navigate(`/user/${item._id}`)}
+        onClick={handleOpenArtist}
       />
     </div>
   );

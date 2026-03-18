@@ -2,15 +2,49 @@ import { useState } from 'react';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import { useNavigate } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
+import { loginWithGoogle } from '../../services/auth.service';
+import { useAuth } from '../../context/AuthContext';
 
 
 function LoginPage() {
   const [activeTab, setActiveTab] = useState('login');
+  const [googleError, setGoogleError] = useState('');
   const navigate = useNavigate();
+  const { login: loginContext } = useAuth();
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-  // Mock Google login for demo
-  const handleMockGoogleLogin = async () => {
-    console.log("Đăng nhập bằng Google");
+  const googleSignIn = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        setGoogleError('');
+
+        const data = await loginWithGoogle({
+          accessToken: tokenResponse.access_token,
+        });
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        loginContext(data.user);
+        navigate('/home');
+      } catch (error) {
+        setGoogleError(error.response?.data?.message || 'Đăng nhập Google thất bại');
+      }
+    },
+    onError: () => {
+      setGoogleError('Không thể đăng nhập với Google');
+    },
+    scope: 'openid email profile',
+  });
+
+  const handleGoogleLogin = async () => {
+    if (!googleClientId) {
+      setGoogleError('Thiếu VITE_GOOGLE_CLIENT_ID ở frontend');
+      return;
+    }
+
+    googleSignIn();
   };
 
   const handleViewWithoutLogin = () => {
@@ -55,7 +89,7 @@ function LoginPage() {
             <button
               type="button"
               className="googleButton"
-              onClick={handleMockGoogleLogin}
+              onClick={handleGoogleLogin}
               style={{
                 width: '100%',
                 padding: '10px',
@@ -81,6 +115,8 @@ function LoginPage() {
               </svg>
               Đăng nhập với Google
             </button>
+
+            {googleError && <p className="error">{googleError}</p>}
 
             <button
               type="button"

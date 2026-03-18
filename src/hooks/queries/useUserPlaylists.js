@@ -4,5 +4,6 @@ import { getMyPlaylists } from "../../services/playlist.service";
 export const useUserPlaylists = () => 
     useQuery({
         queryKey: ["myPlaylists"],
-        queryFn: getMyPlaylists
+        queryFn: getMyPlaylists,
+        enabled: Boolean(localStorage.getItem("token")),
     });

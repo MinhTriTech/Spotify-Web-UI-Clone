@@ -11,7 +11,11 @@ export const getUserProfile = async (id) => {
 };
 
 export const getRandomUser = async (limit) => {
-    const query = limit ? `?limit=${limit}` : "";
-    const res = await axiosInstance.get(`/user/randomUsers${query}`);
+    const query = Number.isFinite(limit) && limit > 0 ? `?limit=${limit}` : "";
+    const res = await axiosInstance.get(`/user/randomUsers${query}`, {
+        toast: {
+            error: false,
+        },
+    });
     return res.data;
 };

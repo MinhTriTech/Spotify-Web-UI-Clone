@@ -4,5 +4,5 @@ import { getRandomUser } from "../../services/user.service";
 export const useRandomUsers = () => 
     useQuery({
         queryKey: ["randomUsers"],
-        queryFn: getRandomUser
+        queryFn: () => getRandomUser()
     });

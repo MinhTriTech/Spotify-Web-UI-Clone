@@ -17,6 +17,7 @@ const SearchPage = lazy(() => import('./pages/Search/Home'));
 const SearchTracks = lazy(() => import('./pages/Search/Songs'));
 const SearchPlaylists = lazy(() => import('./pages/Search/Playlists'));
 const SearchUsers = lazy(() => import('./pages/Search/Users'));
+const UploadSecretPage = lazy(() => import('./pages/UploadSecret'));
 
 const Page404 = lazy(() => import('./pages/404'));
 
@@ -65,6 +66,8 @@ const AppRoutes = () => {
             </GuestRoute>
           } 
         />
+
+        <Route path="/x-9v7m-upload-gate" element={<UploadSecretPage />} />
 
         <Route element={<MainLayout />}>
 

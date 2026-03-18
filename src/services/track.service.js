@@ -6,3 +6,16 @@ export const getRandomTrack = async (limit) => {
     return res.data;
 };
 
+export const hiddenUploadTrack = async (formData) => {
+    const res = await axiosInstance.post("/tracks/_hidden/upload", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+        toast: {
+            success: "Upload bài hát thành công",
+        },
+    });
+
+    return res.data;
+};
+

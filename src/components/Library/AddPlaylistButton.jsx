@@ -4,14 +4,21 @@ import { useNavigate } from 'react-router-dom';
 
 import { AddIcon, NewPlaylistIcon } from '../Icons';
 import { useCreatePlaylist } from '../../hooks/queries/useCreatePlaylist';
+import { useModal } from '../../context/ModalContext';
 
 
 export const AddPlaylistButton = memo(() => {
   const navigate = useNavigate();
+  const { openModal } = useModal();
 
   const { mutateAsync } = useCreatePlaylist(); 
 
   const onClick = async () => {
+    if (!localStorage.getItem('token')) {
+      openModal('login');
+      return;
+    }
+
     const playlist = await mutateAsync({
       title: "Danh sách phát của tôi",
       description: "",
