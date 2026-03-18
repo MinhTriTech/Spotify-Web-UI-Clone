@@ -7,7 +7,7 @@ import PlaylistControls from "./PlaylistControls";
 import { PlaylistTableHeader } from "./PlaylistTableHeader";
 import SongView from "./Song";
 
-const PlaylistList = (({ color, playlist, tracks = [] }) => {
+const PlaylistList = (({ color, playlist, tracks = [], onTrackRemoved }) => {
     const hasTracks = !!tracks?.length;
 
     return (
@@ -36,7 +36,7 @@ const PlaylistList = (({ color, playlist, tracks = [] }) => {
             <div style={{ paddingBottom: 30 }}>
                 <div>
                     {tracks.map((song, index) => (
-                        <SongView song={song} key={`${song._id}`} index={index} />
+                        <SongView song={song} key={`${song._id}`} index={index} playlist={playlist} onTrackRemoved={onTrackRemoved} />
                     ))}
                 </div>
             </div>

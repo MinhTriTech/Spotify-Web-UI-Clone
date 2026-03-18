@@ -1,6 +1,7 @@
 import { Col, Modal, Row } from 'antd';
 import { memo, useEffect, useRef, useState } from 'react';
 import ProForm, { ProFormText } from '@ant-design/pro-form';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { PLAYLIST_DEFAULT_IMAGE } from '../../constants/spotify';
 import { getPlaylistById, updatePlaylist } from '../../services/playlist.service';
@@ -8,6 +9,7 @@ import { useParams } from 'react-router-dom';
 
 const EditPlaylistModal = memo(({ playlistId, onClose }) => {
   const formRef = useRef(null);
+  const queryClient = useQueryClient();
   const { id: routeId } = useParams();
   const id = playlistId || routeId;
 
@@ -82,6 +84,10 @@ const EditPlaylistModal = memo(({ playlistId, onClose }) => {
             }
 
             await updatePlaylist(id, formData);
+            await Promise.all([
+              queryClient.invalidateQueries({ queryKey: ['myPlaylists'] }),
+              queryClient.invalidateQueries({ queryKey: ['playlist', id] }),
+            ]);
             onClose?.();
           } catch (error) {
             console.log(error);

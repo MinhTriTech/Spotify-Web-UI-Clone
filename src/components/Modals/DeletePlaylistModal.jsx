@@ -1,30 +1,32 @@
 import { Modal } from 'antd';
-import { memo, useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import { yourLibraryActions } from '../../store/slices/yourLibrary';
-import { deletePlaylistModalActions } from '../../store/slices/deletePlaylistModal';
-import { playlistService } from '../../services/playlists';
+import { memo, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { deletePlaylist } from '../../services/playlist.service';
 import { useNavigate } from 'react-router-dom';
 
-export const DeletePlaylistModal = memo(() => {
-  const dispatch = useAppDispatch();
+const DeletePlaylistModal = memo(({ playlist, onClose }) => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const playlist = useAppSelector((state) => state.deletePlaylistModal.playlist);
-
-  const onClose = useCallback(() => {
-    dispatch(deletePlaylistModalActions.setPlaylist({ playlist: null }));
-  }, [dispatch]);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
     if (playlist) {
       try {
-        await playlistService.deletePlaylist(playlist.playlist_id);
-        dispatch(yourLibraryActions.fetchMyPlaylists());
-        dispatch(deletePlaylistModalActions.setPlaylist({ playlist: null }));
-        navigate(`/`);
-        onClose();
+        setIsDeleting(true);
+        const playlistId = playlist?._id || playlist?.playlist_id || playlist?.id;
+        if (!playlistId) return;
+
+        await deletePlaylist(playlistId);
+
+        onClose?.();
+        navigate('/home', { replace: true });
+
+        queryClient.invalidateQueries({ queryKey: ['myPlaylists'] });
+        queryClient.removeQueries({ queryKey: ['playlist', String(playlistId)] });
       } catch (error) {
         console.error("Failed to delete playlist", error);
+      } finally {
+        setIsDeleting(false);
       }
     }
   };
@@ -34,8 +36,12 @@ export const DeletePlaylistModal = memo(() => {
       centered
       width={550}
       footer={null}
-      open={!!playlist}
-      onCancel={onClose}
+      open
+      confirmLoading={isDeleting}
+      onCancel={() => {
+        if (isDeleting) return;
+        onClose?.();
+      }}
       title={
         <h1
           style={{
@@ -56,10 +62,11 @@ export const DeletePlaylistModal = memo(() => {
 
       <div style={{ textAlign: 'right' }}>
       <button
+        disabled={isDeleting}
         onClick={handleDelete}
         className='edit-playlist-submit-button'
         >
-        <span>Xác nhận</span>
+        <span>{isDeleting ? 'Đang xóa...' : 'Xác nhận'}</span>
         </button>
       </div>
     </Modal>
@@ -67,3 +74,5 @@ export const DeletePlaylistModal = memo(() => {
 });
 
 DeletePlaylistModal.displayName = 'DeletePlaylistModal';
+
+export default DeletePlaylistModal;

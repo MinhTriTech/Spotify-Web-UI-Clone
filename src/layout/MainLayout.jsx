@@ -5,6 +5,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import Library from "../components/Library";
 import { Navbar } from "../components/Layout/components/Navbar";
 import EditPlaylistModal from "../components/Modals/EditPlaylistModal";
+import DeletePlaylistModal from "../components/Modals/DeletePlaylistModal";
 import LoginModal from "../components/Modals/LoginModal";
 import { useAuth } from "../context/AuthContext";
 import { LoginFooter } from "../components/Layout/components/LoginFooter";
@@ -18,6 +19,10 @@ const MainLayout = () => {
         <div>
             {modal.type == "updatePlaylist" && (
                 <EditPlaylistModal {...modal.props} onClose={closeModal}/>
+            )}
+
+            {modal.type == "deletePlaylist" && (
+                <DeletePlaylistModal {...modal.props} onClose={closeModal}/>
             )}
 
             {modal.type == "login" && (

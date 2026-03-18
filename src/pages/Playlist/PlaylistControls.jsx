@@ -3,9 +3,14 @@ import { Col, Row, Space, Tooltip } from 'antd';
 import { PlayCircleButton } from './PlayCircle';
 import { MenuDots } from '../../components/Icons';
 import { PlayListActionsWrapper } from '../../components/Actions/PlaylistActions';
+import { useAuth } from '../../context/AuthContext';
 
 const PlaylistControls = ({playlist, tracks}) => {
-  const isMine = true;
+  const { user } = useAuth();
+
+  const ownerId = playlist?.owner?._id || playlist?.owner?.id || playlist?.owner;
+  const currentUserId = user?.user?._id || user?._id || user?.id;
+  const isMine = Boolean(ownerId && currentUserId && String(ownerId) === String(currentUserId));
 
   return (
     <div className='playlist-controls'>

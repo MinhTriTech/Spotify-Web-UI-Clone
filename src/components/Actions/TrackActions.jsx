@@ -9,7 +9,7 @@ import { usePlayer } from '../../context/PlayerContext';
 import { useUserPlaylists } from '../../hooks/queries/useUserPlaylists';
 
 const TrackActionsWrapper = memo((props) => {
-  const { children, track, canEdit, trigger } = props;
+  const { children, track, canEdit, trigger, onTrackRemoved } = props;
 
   const { id } = useParams();
 
@@ -104,7 +104,15 @@ const TrackActionsWrapper = memo((props) => {
         icon: <DeleteIcon />,
         onClick: async () => {
           try {
-            await removeTrackFromPlaylist(id, track._id);
+            await removeTrackFromPlaylist(id, track._id, {
+              toast: {
+                success: 'Đã xóa bài hát khỏi playlist',
+              },
+            });
+
+            if (typeof onTrackRemoved === 'function') {
+              onTrackRemoved(track._id);
+            }
           } catch (error) {
             console.error('Failed to delete playlist:', error);
           }

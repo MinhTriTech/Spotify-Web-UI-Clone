@@ -1,8 +1,7 @@
 import { memo, useMemo } from 'react';
-import { Dropdown, Modal } from 'antd';
+import { Dropdown } from 'antd';
 import { DeleteIcon, EditIcon } from '../Icons';
 import { useModal } from '../../context/ModalContext';
-import { deletePlaylist } from '../../services/playlist.service';
 
 
 
@@ -32,15 +31,10 @@ export const PlayListActionsWrapper = memo((props) => {
           onClick: () => {
             if (!playlistId) return;
 
-            Modal.confirm({
-              className: 'playlist-delete-confirm-modal',
-              title: 'Xác nhận xóa playlist',
-              content: `Bạn có chắc chắn muốn xóa playlist ${playlist?.title || ''}?`,
-              okText: 'Xác nhận',
-              cancelText: 'Hủy',
-              okType: 'danger',
-              onOk: async () => {
-                await deletePlaylist(playlistId);
+            openModal('deletePlaylist', {
+              playlist: {
+                ...playlist,
+                playlist_id: playlistId,
               },
             });
           },

@@ -11,11 +11,7 @@ import TrackActionsWrapper from '../Actions/TrackActions';
 const getArtists = (artists) => {
   return (
     <span>
-      {/* <ArtistActionsWrapper artist={a} trigger={['contextMenu']}> */}
-        <Link to={`/artist/1`} style={{ cursor: 'pointer' }}>
-          {artists}
-        </Link>
-      {/* </ArtistActionsWrapper> */}
+      {artists}
     </span>
   );
 };
@@ -92,10 +88,10 @@ const Artists = ({ song, isList }) => {
   );
 };
 
-const Actions = ({ song }) => {
+const Actions = ({ song, canEdit, onTrackRemoved }) => {
   return (
     <div className='text-right actions tablet-hidden' style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-      <TrackActionsWrapper canEdit={false} track={song} trigger={['click']}>
+      <TrackActionsWrapper canEdit={canEdit} track={song} trigger={['click']} onTrackRemoved={onTrackRemoved}>
         <Tooltip title={`Tùy chọn khác cho ${song.title}`}>
           <div>
             <MenuIcon />
